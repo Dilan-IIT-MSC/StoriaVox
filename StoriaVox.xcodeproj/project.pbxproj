@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FE4D27BC2D7F73CB006F8E2D /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = FE4D27BB2D7F73CB006F8E2D /* MSAL */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		FEF47D542D60C3F00001168A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +33,22 @@
 		FEF47D5D2D60C3F00001168A /* StoriaVoxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StoriaVoxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FE4D27BE2D7F73E9006F8E2D /* Exceptions for "StoriaVox" folder in "StoriaVox" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FEF47D422D60C3EF0001168A /* StoriaVox */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FEF47D452D60C3EF0001168A /* StoriaVox */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FE4D27BE2D7F73E9006F8E2D /* Exceptions for "StoriaVox" folder in "StoriaVox" target */,
+			);
 			path = StoriaVox;
 			sourceTree = "<group>";
 		};
@@ -52,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE4D27BC2D7F73CB006F8E2D /* MSAL in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +130,7 @@
 			);
 			name = StoriaVox;
 			packageProductDependencies = (
+				FE4D27BB2D7F73CB006F8E2D /* MSAL */,
 			);
 			productName = StoriaVox;
 			productReference = FEF47D432D60C3EF0001168A /* StoriaVox.app */;
@@ -195,6 +214,9 @@
 			);
 			mainGroup = FEF47D3A2D60C3EF0001168A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FEF47D442D60C3EF0001168A /* Products */;
 			projectDirPath = "";
@@ -399,6 +421,7 @@
 				DEVELOPMENT_TEAM = MSGCT6AX7Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StoriaVox/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -430,6 +453,7 @@
 				DEVELOPMENT_TEAM = MSGCT6AX7Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StoriaVox/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -562,6 +586,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FE4D27BB2D7F73CB006F8E2D /* MSAL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */;
+			productName = MSAL;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FEF47D3B2D60C3EF0001168A /* Project object */;
 }
