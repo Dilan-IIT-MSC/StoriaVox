@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
+import MSAL
 
 struct ContentView: View {
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            
         }
         .padding()
     }
 }
+
+//private let clientId = ""
+//private let tenantName = "storiavox.onmicrosoft.com"
+//private let signUpSignInPolicy = "B2C_1_signup_signin_policy"
+//private let redirectUri = "msauth.com.codewithdilan.StoriaVoX://auth"
+//private let scopes = ["https://YOUR_TENANT_NAME.onmicrosoft.com/YOUR_API_NAME/.default"]
+//private let apiUrl = URL(string: "https://YOUR_AZURE_FUNCTION_URL")!
 
 #Preview {
     ContentView()
