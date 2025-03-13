@@ -48,18 +48,20 @@ struct OnboardView: View {
                         } label: {
                             HStack  {
                                 if selectedIndex == intros.count - 1 {
-                                    Text("Sign up")
+                                    Text("Let's Start!")
                                         .font(.title3)
-                                        .fontWeight(.heavy)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                        .fontDesign(.rounded)
+                                } else {
+                                    Image(systemName: "chevron.right")
+                                        .font(.title3)
+                                        .fontWeight(.bold)
                                         .foregroundColor(.white)
                                         .fontDesign(.rounded)
                                 }
                                 
-                                Image(systemName: "chevron.right")
-                                    .font(.title3)
-                                    .fontWeight(.heavy)
-                                    .foregroundColor(.white)
-                                    .fontDesign(.rounded)
+                                
                             }
                             .padding()
                             .frame(width: selectedIndex == intros.count - 1 ? 200: 60, height: 60)
@@ -75,6 +77,13 @@ struct OnboardView: View {
                 }
             }
             .tabViewStyle(.page)
+            
+            NavigationLink {
+                
+            } label: {
+                
+            }
+
         }
         .ignoresSafeArea()
     }
