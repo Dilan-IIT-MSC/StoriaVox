@@ -14,13 +14,14 @@ struct StoriaVoxApp: App {
     
     var body: some Scene {
         WindowGroup {
-            switch appSettings.route {
-            case .unspecified: SignupView().environmentObject(appSettings)
-            case .login: LoginView()
-            case .signUp: SignupView().environmentObject(appSettings)
-                    
-            default: BaseView()
-            }
+            MainTabView().environmentObject(appSettings)
+//            switch appSettings.route {
+//            case .unspecified: SignupView().environmentObject(appSettings)
+//            case .login: LoginView()
+//            case .signUp: SignupView().environmentObject(appSettings)
+//                    
+//            default: BaseView()
+//            }
         }
     }
 }
