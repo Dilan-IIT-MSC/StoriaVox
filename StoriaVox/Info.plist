@@ -9,7 +9,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>msauth.com.codewithdilan.StoriaVoX</string>
+				<string>msauth.$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			</array>
 		</dict>
 	</array>
@@ -18,5 +18,14 @@
 		<string>msauthv2</string>
 		<string>msauthv3</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsUsageDescription</key>
+		<dict/>
+		<key>NSExceptionDomains</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>
