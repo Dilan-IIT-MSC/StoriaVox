@@ -47,12 +47,23 @@ extension Color {
         self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
     }
     
-    // MARK: Random Color
-    static func random(randomOpacity: Bool = false, opacity: Double = 0) -> Color {
-        Color(
-            red: .random(in: 0...1),
-            green: .random(in: 0...1),
-            blue: .random(in: 0...1),
-            opacity: randomOpacity ? (opacity != 0 ? opacity : .random(in: 0...1)) : 1)
-    }
+    static let backgroundColors: [Color] = [
+        .amber50,
+        .blue50,
+        .brown50,
+        .cyan50,
+        .deepOrange50,
+        .deepPurple50,
+        .green50,
+        .indigo50,
+        .lightBlue50,
+        .lightGreen50,
+        .lime50,
+        .orange50,
+        .pink50,
+        .purple50,
+        .red50,
+        .teal50,
+        .yellow50,
+    ]
 }
