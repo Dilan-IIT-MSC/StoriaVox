@@ -8,73 +8,34 @@
 import SwiftUI
 
 struct DiscoverView: View {
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
+    
     var body: some View {
         ZStack(alignment: .top) {
+            Color.background
+            
             VStack(alignment: .leading) {
                 headerView()
                 
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("Browse by Category")
-                        
-                }
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 20) {
-                        ForEach(0..<10) { index in
-                            Button {
-                                
-                            } label: {
-                                VStack(alignment: .leading, spacing: 0) {
-                                    ZStack(alignment: .top) {
-                                        Image(systemName: "microwave")
-                                            .resizable()
-                                            .frame(width: 120, height: 120)
-                                            .foregroundColor(Color.backgroundColors.randomElement())
-                                            .background(.red)
-                                            .cornerRadius(10)
-                                            .offset(x: 30)
-                                            
-                                        Image(systemName: "microbe.circle.fill")
-                                            .resizable()
-                                            .frame(width: 120, height: 120)
-                                            .foregroundColor(Color.backgroundColors.randomElement())
-                                            .background(.green)
-                                            .cornerRadius(10)
-                                            .offset(x: 0)
-                                        
-                                        Image(systemName: "square.and.arrow.down.badge.clock.fill")
-                                            .resizable()
-                                            .frame(width: 120, height: 120)
-                                            .foregroundColor(Color.backgroundColors.randomElement())
-                                            .background(.brown)
-                                            .cornerRadius(10)
-                                            .offset(x: -30)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    
-                                    Text("Category Name")
-                                        .font(.system(size: 20, weight: .medium))
-                                        .foregroundStyle(.black)
-                                        .fontDesign(.rounded)
-                                    
-                                    
-                                    
-                                }
-                                .frame(width: 200, height: 180)
-                                .background(Color.backgroundColors.randomElement())
-                                .cornerRadius(10)
-                                .padding(.vertical, 10)
-                            }
-
-                        }
-                    }
+                ScrollView(showsIndicators: false) {
+                    trendingSection()
+                    
+                    Divider()
+                    
+                    recentlyListenedSection()
+                    
+                    Divider()
+                    
+                    categoriesSection()
+                    
                 }
                 
                 Spacer()
             }
             .padding(.horizontal, 16)
+            .padding(.top, safeAreaInsets.top)
         }
-        .ignoresSafeArea(edges: .bottom)
+        .ignoresSafeArea(edges: .top)
     }
 }
 
@@ -84,12 +45,12 @@ extension DiscoverView {
         HStack(alignment: .center, spacing: 8) {
             ZStack {
                 Circle()
-                    .fill(.brown50)
+                    .fill(.green50)
                     .frame(width: 50, height: 50)
                     .shadow(radius: 1)
                 
                 Image(systemName: "person.fill")
-                    .foregroundColor(.brown)
+                    .foregroundColor(.accent)
                     .font(.system(size: 32, weight: .bold))
             }
             
@@ -115,6 +76,81 @@ extension DiscoverView {
             .padding(8)
             .background(Color.gray.opacity(0.1))
             .cornerRadius(8)
+        }
+    }
+    
+    @ViewBuilder
+    func trendingSection() -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("Trending Stories")
+                    .font(.system(size: 20, weight: .semibold))
+                
+                Spacer()
+            }
+            .padding(.top, 16)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
+                    ForEach(0..<10) { index in
+                        StoryTileView()
+                    }
+                }
+            }
+        }
+        .padding(.vertical, 16)
+    }
+    
+    @ViewBuilder
+    func recentlyListenedSection() -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("Recently Listened")
+                    .font(.system(size: 20, weight: .semibold))
+                
+                Spacer()
+            }
+            .padding(.top, 16)
+            
+            ForEach(0..<2) { index in
+                RecentlyListenedRowView()
+            }
+        }
+        .padding(.bottom, 16)
+    }
+    
+    @ViewBuilder
+    func categoriesSection() -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("Listen by Category")
+                    .font(.system(size: 20, weight: .semibold))
+                
+                Spacer()
+                
+                Button {
+                    
+                } label: {
+                    HStack(alignment: .center, spacing: 4) {
+                        Text("view all")
+                            .font(.system(size: 16, weight: .regular))
+                            .foregroundStyle(.secondValue)
+                        
+                        Image(systemName: "chevron.right")
+                            .foregroundStyle(.secondValue)
+                            .font(.system(size: 14))
+                    }
+                }
+            }
+            .padding(.top, 16)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
+                    ForEach(0..<5) { index in
+                        CategoryTileView()
+                    }
+                }
+            }
         }
     }
 }
