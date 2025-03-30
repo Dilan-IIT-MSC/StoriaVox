@@ -8,34 +8,42 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject var appSettings: AppSettings
     @State private var selectedTabIndex = 0
+    
     var body: some View {
-        TabView(selection: $selectedTabIndex) {
-            DiscoverView()
-                .tag(0)
-                .tabItem {
-                    Text("Discover")
-                    Image(systemName: "house")
-                }
-            
-            CreateStoryView()
-                .tag(1)
-                .tabItem {
-                    Text("Create")
-                    Image(systemName: "waveform.badge.microphone")
-                }
-            
-            ProfileView()
-                .tag(2)
-                .tabItem {
-                    Text("Profile")
-                    Image(systemName: "person.circle")
-                }
+        NavigationStack(path: $appSettings.path) {
+            TabView(selection: $selectedTabIndex) {
+                DiscoverView()
+                    .tag(0)
+                    .tabItem {
+                        Text("Discover")
+                        Image(systemName: "house")
+                    }
+                    .environmentObject(appSettings)
+                
+                CreateStoryView()
+                    .tag(1)
+                    .tabItem {
+                        Text("Create")
+                        Image(systemName: "waveform.badge.microphone")
+                    }
+                
+                ProfileView()
+                    .tag(2)
+                    .tabItem {
+                        Text("Profile")
+                        Image(systemName: "person.circle")
+                    }
+            }
+            .tabViewStyle(.automatic)
+            .navigationDestination(for: Route.self) { route in
+                handleHomeNavigation(route: route)
+            }
         }
-        .tabViewStyle(.automatic)
     }
 }
 
 #Preview {
-    MainTabView()
+    MainTabView().environmentObject(AppSettings())
 }

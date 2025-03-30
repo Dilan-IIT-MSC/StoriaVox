@@ -14,6 +14,8 @@ enum Route: Equatable, Hashable {
     case signUp
     case recording
     case listening
+    case allCategories
+    
     
     public init() {
         self = .unspecified

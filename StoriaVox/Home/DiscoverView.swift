@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DiscoverView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
+    @EnvironmentObject var appSettings: AppSettings
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -34,8 +35,10 @@ struct DiscoverView: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, safeAreaInsets.top)
+
         }
         .ignoresSafeArea(edges: .top)
+        
     }
 }
 
@@ -129,7 +132,7 @@ extension DiscoverView {
                 Spacer()
                 
                 Button {
-                    
+                    appSettings.path.append(Route.allCategories)
                 } label: {
                     HStack(alignment: .center, spacing: 4) {
                         Text("view all")
@@ -152,7 +155,14 @@ extension DiscoverView {
                 }
             }
         }
+        .navigationDestination(for: Route.self) { route in
+            let _ = print("route innn")
+            if route == .allCategories {
+                AllCategoriesView()
+            }
+        }
     }
+    
 }
 
 #Preview {

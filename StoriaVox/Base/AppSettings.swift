@@ -8,6 +8,7 @@ import SwiftUI
 import MSAL
 
 class AppSettings: ObservableObject {
+    @Published var path = NavigationPath()
     @Published var route: Route = .unspecified
     @Published var nativeAuth: MSALNativeAuthPublicClientApplication?
     
