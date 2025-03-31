@@ -22,7 +22,7 @@ struct AllCategoriesView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(0..<appSettings.storyCategories.count, id: \.self) { index in
-                            CategoryTileView(title: appSettings.storyCategories[index])
+                            CategoryTileView(category: appSettings.storyCategories[index])
                         }
                     }
                 }

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "life_lessons.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

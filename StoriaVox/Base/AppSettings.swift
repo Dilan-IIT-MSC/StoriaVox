@@ -11,23 +11,23 @@ class AppSettings: ObservableObject {
     @Published var path = NavigationPath()
     @Published var route: Route = .unspecified
     @Published var nativeAuth: MSALNativeAuthPublicClientApplication?
-    @Published var storyCategories = [
-        "Family",
-        "Life Lessons",
-        "Culture",
-        "Childhood",
-        "Love",
-        "Career",
-        "Health",
-        "Travel",
-        "Inspiration",
-        "History",
-        "Grief",
-        "Joy",
-        "Fantasy",
-        "Poetry",
-        "Dialogues",
-        "Other"
+    @Published var storyCategories: [Category] = [
+        .init(name: "Family", icon: .init(.family)),
+        .init(name: "Life Lessons", icon: .init(.lifeLessons)),
+        .init(name: "Culture", icon: .init(.culture)),
+        .init(name: "Childhood", icon: .init(.childhood)),
+        .init(name: "Love", icon: .init(.love)),
+        .init(name: "Career", icon: .init(.career)),
+        .init(name: "Health", icon: .init(.health)),
+        .init(name: "Travel", icon: .init(.travel)),
+        .init(name: "Inspiration", icon: .init(.inspiration)),
+        .init(name: "History", icon: .init(.history)),
+        .init(name: "Grief", icon: .init(.grief)),
+        .init(name: "Joy", icon: .init(.joy)),
+        .init(name: "Fantasy", icon: .init(.fantasy)),
+        .init(name: "Poetry", icon: .init(.poetry)),
+        .init(name: "Dialogues", icon: .init(.dialogues)),
+        .init(name: "Other", icon: .init(.other))
     ]
     
     init() {

@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct CategoryTileView: View {
-    var title: String
-    
+    var category: Category
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             HStack(spacing: 0) {
@@ -27,33 +26,45 @@ struct CategoryTileView: View {
             }
             .frame(width: 176, height: 96)
             
-            HStack {
-                Text(title)
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(.title)
-                    .padding(.top, 16)
+            HStack(alignment: .center) {
+                ZStack {
+                    Circle()
+                        .fill(.lightGreen50)
+                        .stroke(.border, lineWidth: 1)
+                        .frame(width: 30, height: 30, alignment: .center)
+                        .shadow(radius: 1)
+                    
+                    category.icon
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24, alignment: .center)
+                    
+                }
+
+                
+                VStack(alignment: .leading) {
+                    Text(category.name)
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundStyle(.title)
+                    
+                    Text("\(Int.random(in: 0...1000)) Stories")
+                        .font(.system(size: 13, weight: .light))
+                        .foregroundStyle(.secondValue)
+                }
+
                 
                 Spacer()
             }
-            
-            HStack(spacing: 4) {
-                Image(systemName: "music.note.house")
-                    .resizable()
-                    .foregroundStyle(.secondValue)
-                    .frame(width: 16, height: 16)
-                
-                Text("\(Int.random(in: 0...1000)) Stories")
-                    .font(.system(size: 13, weight: .light))
-                    .foregroundStyle(.secondValue)
-                
-                Spacer()
-            }
-            .padding(.top, 4)
+            .padding(.top, 8)
         }
         .padding(16)
         .frame(width: 176)
-        .background(Color.backgroundColors.randomElement())
-        .clipShape(.rect(cornerRadius: 16))
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.backgroundColors.randomElement() ?? .whiteBackground)
+                .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 4)
+        )
+        .contentShape(Rectangle())
     }
     
     @ViewBuilder
@@ -74,5 +85,5 @@ struct CategoryTileView: View {
 }
 
 #Preview {
-    CategoryTileView(title: "Category name")
+    CategoryTileView(category: .init(name: "sample", icon: .init(.love)))
 }
