@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CategoryTileView: View {
+    var title: String
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             HStack(spacing: 0) {
@@ -25,10 +27,14 @@ struct CategoryTileView: View {
             }
             .frame(width: 176, height: 96)
             
-            Text("Imagination")
-                .font(.system(size: 17, weight: .medium))
-                .foregroundStyle(.title)
-                .padding(.top, 16)
+            HStack {
+                Text(title)
+                    .font(.system(size: 17, weight: .medium))
+                    .foregroundStyle(.title)
+                    .padding(.top, 16)
+                
+                Spacer()
+            }
             
             HStack(spacing: 4) {
                 Image(systemName: "music.note.house")
@@ -36,9 +42,11 @@ struct CategoryTileView: View {
                     .foregroundStyle(.secondValue)
                     .frame(width: 16, height: 16)
                 
-                Text("235 Stories")
+                Text("\(Int.random(in: 0...1000)) Stories")
                     .font(.system(size: 13, weight: .light))
                     .foregroundStyle(.secondValue)
+                
+                Spacer()
             }
             .padding(.top, 4)
         }
@@ -66,5 +74,5 @@ struct CategoryTileView: View {
 }
 
 #Preview {
-    CategoryTileView()
+    CategoryTileView(title: "Category name")
 }

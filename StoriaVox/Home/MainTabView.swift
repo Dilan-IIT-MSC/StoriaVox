@@ -37,6 +37,8 @@ struct MainTabView: View {
                     }
             }
             .tabViewStyle(.automatic)
+            .environment(\.horizontalSizeClass, .compact)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Route.self) { route in
                 handleHomeNavigation(route: route)
             }

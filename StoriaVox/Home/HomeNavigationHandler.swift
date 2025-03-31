@@ -29,6 +29,8 @@ extension MainTabView {
         case .allCategories:
             AllCategoriesView()
                 .environmentObject(appSettings)
+        case .storyListing:
+            Text("Unspecified")
         }
     }
 }

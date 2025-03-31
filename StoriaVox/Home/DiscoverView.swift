@@ -150,7 +150,7 @@ extension DiscoverView {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
                     ForEach(0..<5) { index in
-                        CategoryTileView()
+                        CategoryTileView(title: appSettings.storyCategories[index])
                     }
                 }
             }
@@ -166,5 +166,5 @@ extension DiscoverView {
 }
 
 #Preview {
-    DiscoverView()
+    DiscoverView().environmentObject(AppSettings())
 }

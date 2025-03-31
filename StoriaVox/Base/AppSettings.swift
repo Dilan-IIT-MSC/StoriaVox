@@ -11,6 +11,24 @@ class AppSettings: ObservableObject {
     @Published var path = NavigationPath()
     @Published var route: Route = .unspecified
     @Published var nativeAuth: MSALNativeAuthPublicClientApplication?
+    @Published var storyCategories = [
+        "Family",
+        "Life Lessons",
+        "Culture",
+        "Childhood",
+        "Love",
+        "Career",
+        "Health",
+        "Travel",
+        "Inspiration",
+        "History",
+        "Grief",
+        "Joy",
+        "Fantasy",
+        "Poetry",
+        "Dialogues",
+        "Other"
+    ]
     
     init() {
         do {
