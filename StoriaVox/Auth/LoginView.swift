@@ -31,23 +31,22 @@ struct LoginView: View {
                 .textFieldStyle(.plain)
                 .textContentType(.emailAddress)
                 .foregroundStyle(.black)
-                .frame(height: 50)
-                .padding(.horizontal, 16)
+                .padding(12)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 8)
                         .fill(.accent.opacity(0.1))
                         .stroke(Color.accentColor, lineWidth: 0.5)
                 )
                 
                 SecureField("", text: $password, prompt: Text("Password")
                     .foregroundColor(.gray))
-                .frame(height: 50)
-                .padding(.horizontal, 16)
+                .padding(12)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.asciiCapable)
                 .autocorrectionDisabled(true)
+                .submitLabel(.continue)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 8)
                         .fill(.accent.opacity(0.1))
                         .stroke(Color.accentColor, lineWidth: 0.5)
                 )
@@ -73,14 +72,14 @@ struct LoginView: View {
                         Spacer()
                         
                         Text("Sign In")
-                            .font(.system(size: 24, weight: .medium))
+                            .font(.system(size: 20, weight: .medium))
                             .foregroundStyle(.white)
                         
                         Spacer()
                     }
                     .padding(.vertical, 12)
                     .background(Color.accentColor)
-                    .cornerRadius(16)
+                    .cornerRadius(8)
                     .contentShape(Rectangle())
                 }
                 .padding(.top, 24)

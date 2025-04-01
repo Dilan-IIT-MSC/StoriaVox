@@ -11,12 +11,13 @@ struct SignupView: View {
     @EnvironmentObject internal var appSettings: AppSettings
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @StateObject var viewModel: SignupVM = .init()
+    @State private var showError: Bool = false
     
     var body: some View {
         ZStack {
             Color.background
             
-            VStack(spacing: 0) {
+            VStack(spacing: 16) {
                 Spacer()
                 
                 Text("Begin Your Storytelling Journey")
@@ -25,63 +26,36 @@ struct SignupView: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 50)
                 
-                TextField("", text: $viewModel.name, prompt: Text("Name")
-                    .foregroundColor(.gray))
-                .textFieldStyle(.plain)
-                .textContentType(.name)
-                .foregroundStyle(.black)
-                .frame(height: 50)
-                .padding(.horizontal, 16)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.accent.opacity(0.1))
-                        .stroke(Color.accentColor, lineWidth: 0.5)
-                )
+                CustomTextField(placeholder: "Name", text: $viewModel.name, showError: $showError)
                 
-                TextField("", text: $viewModel.username, prompt: Text("Email")
-                    .foregroundColor(.gray))
-                .textFieldStyle(.plain)
-                .textContentType(.emailAddress)
-                .foregroundStyle(.black)
-                .frame(height: 50)
-                .padding(.horizontal, 16)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.accent.opacity(0.1))
-                        .stroke(Color.accentColor, lineWidth: 0.5)
-                )
-                .padding(.top, 24)
+                CustomTextField(placeholder: "Email", text: $viewModel.username, showError: $showError)
                 
                 SecureField("", text: $viewModel.password, prompt: Text("Password")
                     .foregroundColor(.gray))
-                .frame(height: 50)
-                .padding(.horizontal, 16)
+                .padding(12)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.asciiCapable)
                 .autocorrectionDisabled(true)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 8)
                         .fill(.accent.opacity(0.1))
-                        .stroke(Color.accentColor, lineWidth: 0.5)
+                        .stroke(Color.accentColor, lineWidth: 1)
                 )
-                .padding(.top, 24)
+                .padding(.top, 8)
                 
                 SecureField("", text: $viewModel.confirmPassword, prompt: Text("Confirm Password")
                     .foregroundColor(.gray))
-                .frame(height: 50)
-                .padding(.horizontal, 16)
+                .padding(12)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.asciiCapable)
                 .autocorrectionDisabled(true)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 8)
                         .fill(.accent.opacity(0.1))
-                        .stroke(Color.accentColor, lineWidth: 0.5)
+                        .stroke(Color.accentColor, lineWidth: 1)
                 )
-                .padding(.top, 24)
-                
-                
-                
+                .padding(.top, 8)
+            
                 HStack(alignment: .center, spacing: 0) {
                     Spacer()
                     
@@ -106,7 +80,7 @@ struct SignupView: View {
                         Spacer()
                         
                         Text("Sign Up")
-                            .font(.system(size: 24, weight: .medium))
+                            .font(.system(size: 20, weight: .medium))
                             .foregroundStyle(.white)
                         
                         Spacer()
