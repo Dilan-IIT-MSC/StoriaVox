@@ -12,22 +12,22 @@ class AppSettings: ObservableObject {
     @Published var route: Route = .unspecified
     @Published var nativeAuth: MSALNativeAuthPublicClientApplication?
     @Published var storyCategories: [Category] = [
-        .init(name: "Family", icon: .init(.family)),
-        .init(name: "Life Lessons", icon: .init(.lifeLessons)),
-        .init(name: "Culture", icon: .init(.culture)),
-        .init(name: "Childhood", icon: .init(.childhood)),
-        .init(name: "Love", icon: .init(.love)),
-        .init(name: "Career", icon: .init(.career)),
-        .init(name: "Health", icon: .init(.health)),
-        .init(name: "Travel", icon: .init(.travel)),
-        .init(name: "Inspiration", icon: .init(.inspiration)),
-        .init(name: "History", icon: .init(.history)),
-        .init(name: "Grief", icon: .init(.grief)),
-        .init(name: "Joy", icon: .init(.joy)),
-        .init(name: "Fantasy", icon: .init(.fantasy)),
-        .init(name: "Poetry", icon: .init(.poetry)),
-        .init(name: "Dialogues", icon: .init(.dialogues)),
-        .init(name: "Other", icon: .init(.other))
+        .init(id: 1, name: "Family", icon: .init(.family)),
+        .init(id: 2, name: "Life Lessons", icon: .init(.lifeLessons)),
+        .init(id: 3, name: "Culture", icon: .init(.culture)),
+        .init(id: 4, name: "Childhood", icon: .init(.childhood)),
+        .init(id: 5, name: "Love", icon: .init(.love)),
+        .init(id: 6, name: "Career", icon: .init(.career)),
+        .init(id: 7, name: "Health", icon: .init(.health)),
+        .init(id: 8, name: "Travel", icon: .init(.travel)),
+        .init(id: 9, name: "Inspiration", icon: .init(.inspiration)),
+        .init(id: 10, name: "History", icon: .init(.history)),
+        .init(id: 11, name: "Grief", icon: .init(.grief)),
+        .init(id: 12, name: "Joy", icon: .init(.joy)),
+        .init(id: 13, name: "Fantasy", icon: .init(.fantasy)),
+        .init(id: 14, name: "Poetry", icon: .init(.poetry)),
+        .init(id: 15, name: "Dialogues", icon: .init(.dialogues)),
+        .init(id: 16, name: "Other", icon: .init(.other))
     ]
     
     init() {

@@ -27,21 +27,8 @@ struct CategoryTileView: View {
             .frame(width: 176, height: 96)
             
             HStack(alignment: .center) {
-                ZStack {
-                    Circle()
-                        .fill(.lightGreen50)
-                        .stroke(.border, lineWidth: 1)
-                        .frame(width: 30, height: 30, alignment: .center)
-                        .shadow(radius: 1)
-                    
-                    category.icon
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24, alignment: .center)
-                    
-                }
+                CategoryIconView(icon: category.icon)
 
-                
                 VStack(alignment: .leading) {
                     Text(category.name)
                         .font(.system(size: 17, weight: .medium))
@@ -85,5 +72,5 @@ struct CategoryTileView: View {
 }
 
 #Preview {
-    CategoryTileView(category: .init(name: "sample", icon: .init(.love)))
+    CategoryTileView(category: .init(id: 22, name: "sample", icon: .init(.love)))
 }

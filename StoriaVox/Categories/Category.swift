@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct Category: Identifiable {
-    let id: String = UUID().uuidString
+    let id: Int32
     let name: String
     let icon: Image
 }
