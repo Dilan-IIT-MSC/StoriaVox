@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE1DCF552D9C1C6600C5B504 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = FE1DCF542D9C1C6600C5B504 /* AudioKit */; };
 		FE4D27BC2D7F73CB006F8E2D /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = FE4D27BB2D7F73CB006F8E2D /* MSAL */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE1DCF552D9C1C6600C5B504 /* AudioKit in Frameworks */,
 				FE4D27BC2D7F73CB006F8E2D /* MSAL in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +133,7 @@
 			name = StoriaVox;
 			packageProductDependencies = (
 				FE4D27BB2D7F73CB006F8E2D /* MSAL */,
+				FE1DCF542D9C1C6600C5B504 /* AudioKit */,
 			);
 			productName = StoriaVox;
 			productReference = FEF47D432D60C3EF0001168A /* StoriaVox.app */;
@@ -216,6 +219,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
+				FE1DCF532D9C1C6600C5B504 /* XCRemoteSwiftPackageReference "AudioKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FEF47D442D60C3EF0001168A /* Products */;
@@ -588,6 +592,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		FE1DCF532D9C1C6600C5B504 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.6.5;
+			};
+		};
 		FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
@@ -599,6 +611,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		FE1DCF542D9C1C6600C5B504 /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE1DCF532D9C1C6600C5B504 /* XCRemoteSwiftPackageReference "AudioKit" */;
+			productName = AudioKit;
+		};
 		FE4D27BB2D7F73CB006F8E2D /* MSAL */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */;
