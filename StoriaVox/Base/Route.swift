@@ -16,8 +16,12 @@ enum Route: Equatable, Hashable {
     case listening
     case allCategories
     case storyListing
+    case storyMetadata
+    case storyUpload
     
     public init() {
         self = .unspecified
     }
 }
+
+

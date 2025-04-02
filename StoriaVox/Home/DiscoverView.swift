@@ -12,33 +12,34 @@ struct DiscoverView: View {
     @EnvironmentObject var appSettings: AppSettings
     
     var body: some View {
-        ZStack(alignment: .top) {
-            Color.background
-            
-            VStack(alignment: .leading) {
-                headerView()
+        NavigationStack(path: $appSettings.homePaths) {
+            ZStack(alignment: .top) {
+                Color.background
                 
-                ScrollView(showsIndicators: false) {
-                    trendingSection()
+                VStack(alignment: .leading) {
+                    headerView()
                     
-                    Divider()
+                    ScrollView(showsIndicators: false) {
+                        trendingSection()
+                        
+                        Divider()
+                        
+                        recentlyListenedSection()
+                        
+                        Divider()
+                        
+                        categoriesSection()
+                        
+                    }
                     
-                    recentlyListenedSection()
-                    
-                    Divider()
-                    
-                    categoriesSection()
-                    
+                    Spacer()
                 }
-                
-                Spacer()
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, safeAreaInsets.top)
+                .padding(.horizontal, 16)
+                .padding(.top, safeAreaInsets.top)
 
+            }
+            .ignoresSafeArea(edges: .top)
         }
-        .ignoresSafeArea(edges: .top)
-        
     }
 }
 
@@ -132,7 +133,7 @@ extension DiscoverView {
                 Spacer()
                 
                 Button {
-                    appSettings.path.append(Route.allCategories)
+                    appSettings.homePaths.append(.allCategories)
                 } label: {
                     HStack(alignment: .center, spacing: 4) {
                         Text("view all")
@@ -150,15 +151,24 @@ extension DiscoverView {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
                     ForEach(0..<5) { index in
-                        CategoryTileView(category: appSettings.storyCategories[index])
+                        Button {
+                            appSettings.homePaths.append(.storyListing)
+                        } label: {
+                            CategoryTileView(category: appSettings.storyCategories[index])
+                                .contentShape(Rectangle())
+                        }
                     }
                 }
             }
         }
         .navigationDestination(for: Route.self) { route in
-            let _ = print("route innn")
-            if route == .allCategories {
-                AllCategoriesView()
+            switch route {
+            case .allCategories:
+                AllCategoriesView().environmentObject(appSettings)
+            case .storyListing:
+                AllStoriesView().environmentObject(appSettings)
+            default:
+                Text("None \(route)")
             }
         }
     }

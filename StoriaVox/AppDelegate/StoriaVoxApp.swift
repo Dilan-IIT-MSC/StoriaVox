@@ -14,7 +14,7 @@ struct StoriaVoxApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView().environmentObject(appSettings)
+            AllStoriesView().environmentObject(appSettings)
 //            switch appSettings.route {
 //            case .unspecified: SignupView().environmentObject(appSettings)
 //            case .login: LoginView()

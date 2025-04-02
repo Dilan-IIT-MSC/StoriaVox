@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Category: Identifiable {
+struct Category: Identifiable, Equatable {
     let id: Int32
     let name: String
     let icon: Image

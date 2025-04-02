@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject var appSettings: AppSettings
     var body: some View {
-        Text("Hello, profile world!")
+        NavigationStack(path: $appSettings.profilePaths) {
+            Text("Hello, profile world!")
+        }
     }
 }
 
 #Preview {
-    ProfileView()
+    ProfileView().environmentObject(AppSettings())
 }
