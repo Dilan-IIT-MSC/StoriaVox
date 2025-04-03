@@ -1,6 +1,15 @@
 {
-  "originHash" : "3e69a8a283d816f0c40d968c3638d84cf5bbd5cea067067e9f6ecebcc7cdbf4c",
+  "originHash" : "b3bbbd8989156cdd39a2e03928afa07261aab36b0b187585f625ef5c920f67ef",
   "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
     {
       "identity" : "audiokit",
       "kind" : "remoteSourceControl",

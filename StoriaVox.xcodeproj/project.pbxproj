@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FE1DCF552D9C1C6600C5B504 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = FE1DCF542D9C1C6600C5B504 /* AudioKit */; };
+		FE45589B2D9EA13C00A5323C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FE45589A2D9EA13C00A5323C /* Alamofire */; };
 		FE4D27BC2D7F73CB006F8E2D /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = FE4D27BB2D7F73CB006F8E2D /* MSAL */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE45589B2D9EA13C00A5323C /* Alamofire in Frameworks */,
 				FE1DCF552D9C1C6600C5B504 /* AudioKit in Frameworks */,
 				FE4D27BC2D7F73CB006F8E2D /* MSAL in Frameworks */,
 			);
@@ -134,6 +136,7 @@
 			packageProductDependencies = (
 				FE4D27BB2D7F73CB006F8E2D /* MSAL */,
 				FE1DCF542D9C1C6600C5B504 /* AudioKit */,
+				FE45589A2D9EA13C00A5323C /* Alamofire */,
 			);
 			productName = StoriaVox;
 			productReference = FEF47D432D60C3EF0001168A /* StoriaVox.app */;
@@ -220,6 +223,7 @@
 			packageReferences = (
 				FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
 				FE1DCF532D9C1C6600C5B504 /* XCRemoteSwiftPackageReference "AudioKit" */,
+				FE4558992D9EA13C00A5323C /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FEF47D442D60C3EF0001168A /* Products */;
@@ -600,6 +604,14 @@
 				minimumVersion = 5.6.5;
 			};
 		};
+		FE4558992D9EA13C00A5323C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 		FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
@@ -615,6 +627,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FE1DCF532D9C1C6600C5B504 /* XCRemoteSwiftPackageReference "AudioKit" */;
 			productName = AudioKit;
+		};
+		FE45589A2D9EA13C00A5323C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE4558992D9EA13C00A5323C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 		FE4D27BB2D7F73CB006F8E2D /* MSAL */ = {
 			isa = XCSwiftPackageProductDependency;
