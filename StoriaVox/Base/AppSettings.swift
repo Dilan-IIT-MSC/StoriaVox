@@ -6,13 +6,14 @@
 //
 import SwiftUI
 import MSAL
+import Combine
 
 class AppSettings: ObservableObject {
+    private var cancellables: Set<AnyCancellable> = []
     @Published var profilePaths: [Route] = []
     @Published var createStoryPaths: [Route] = []
     @Published var homePaths: [Route] = []
     @Published var mainRoute: MainRoute = .unspecified
-    @Published var nativeAuth: MSALNativeAuthPublicClientApplication?
     @Published var storyCategories: [Category] = [
         .init(id: 1, name: "Family", icon: .init(.family)),
         .init(id: 2, name: "Life Lessons", icon: .init(.lifeLessons)),
@@ -33,16 +34,21 @@ class AppSettings: ObservableObject {
     ]
     
     init() {
-        do {
-            self.nativeAuth = try MSALNativeAuthPublicClientApplication(
-                clientId: "f33cf369-7f6a-4c45-b005-e739e3ecb4ea",
-                tenantSubdomain: "storiavoxapp",
-                challengeTypes: [.OOB, .password]
-            )
-            
-            print("Initialized Native Auth successfully.")
-        } catch {
-            print("Unable to initialize MSAL: \(error)")
-        }
+        NotificationCenter.default
+            .publisher(for: .showBottomBanner)
+            .sink(receiveValue: { [weak self] (notification) in
+                if let userInfo = notification.userInfo {
+                    if let newMainRoute: MainRoute = userInfo.valueForKey("mainRoute") {
+                        if self?.mainRoute != newMainRoute {
+                            self?.mainRoute = newMainRoute
+                        }
+                    }
+                }
+            })
+            .store(in: &cancellables)
+    }
+    
+    deinit {
+        cancellables.removeAll()
     }
 }

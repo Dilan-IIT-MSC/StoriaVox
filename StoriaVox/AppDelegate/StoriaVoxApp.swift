@@ -12,8 +12,8 @@ struct StoriaVoxApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var authManager = AuthenticationManager.shared
     @StateObject private var appSettings = AppSettings()
-    @State private var bannerState = BannerState()
-    @State private var loadingState = LoadingState()
+    @StateObject private var bannerState = BannerState()
+    @StateObject private var loadingState = LoadingState()
     
     var body: some Scene {
         WindowGroup {
@@ -30,7 +30,10 @@ struct StoriaVoxApp: App {
             default:
                 if authManager.isAuthenticated {
                     MainTabView()
-                        .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)
+                        .withAppEnvironment(
+                            appSettings: appSettings,
+                            bannerState: bannerState,
+                            loadingState: loadingState)
                         .onAppear {
                             appSettings.mainRoute = .home
                         }

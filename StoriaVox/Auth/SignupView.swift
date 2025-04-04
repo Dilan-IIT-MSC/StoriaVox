@@ -74,7 +74,7 @@ struct SignupView: View {
                 .padding(.top, 8)
                 
                 Button {
-                    viewModel.signUpUser(nativeAuth: appSettings.nativeAuth)
+                   
                 } label: {
                     HStack {
                         Spacer()

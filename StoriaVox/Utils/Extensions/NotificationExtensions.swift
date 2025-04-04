@@ -10,4 +10,5 @@ import Foundation
 extension Notification.Name {
     static let showBottomBanner = Notification.Name("showBottomBanner")
     static let hideBottomBanner = Notification.Name("hideBottomBanner")
+    static let setNavigationPath = Notification.Name("setNavigationPath")
 }

@@ -9,18 +9,18 @@ import Foundation
 
 class BannerHandler: NSObject {
     
-    @objc static let shared = BannerHandler()
+    static let shared = BannerHandler()
     private override init() { }
     
     private func show(bannerData: BannerData) {
         NotificationCenter.default.post(name: .showBottomBanner, object: nil, userInfo: ["bannerData": bannerData])
     }
     
-    @objc func hide() {
+    func hide() {
         NotificationCenter.default.post(name: .hideBottomBanner, object: nil)
     }
     
-    @objc func showSuccessBanner(title: String?, message: String, isAutoHide: Bool, onDismiss: (() -> Void)? = nil) {
+    func showSuccessBanner(title: String?, message: String, isAutoHide: Bool, onDismiss: (() -> Void)? = nil) {
         self.show(bannerData: BannerData(
                 title: title,
                 detail: message,
@@ -29,7 +29,7 @@ class BannerHandler: NSObject {
                 dismissAction: onDismiss))
     }
     
-    @objc func showErrorBanner(title: String?, message: String, isAutoHide: Bool, onDismiss: (() -> Void)? = nil) {
+    func showErrorBanner(title: String?, message: String, isAutoHide: Bool, onDismiss: (() -> Void)? = nil) {
         self.show(bannerData: BannerData(
             title: title,
             detail: message,
@@ -38,7 +38,7 @@ class BannerHandler: NSObject {
             dismissAction: onDismiss))
     }
     
-    @objc func showInfoErrorBanner(
+    func showInfoErrorBanner(
         title: String?,
         message: String,
         isAutoHide: Bool,
