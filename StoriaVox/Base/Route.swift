@@ -24,4 +24,15 @@ enum Route: Equatable, Hashable {
     }
 }
 
+enum MainRoute: Equatable, Hashable {
+    case unspecified
+    case home
+    case login
+    case signUp
+    
+    public init() {
+        self = .unspecified
+    }
+}
+
 

@@ -11,7 +11,7 @@ class AppSettings: ObservableObject {
     @Published var profilePaths: [Route] = []
     @Published var createStoryPaths: [Route] = []
     @Published var homePaths: [Route] = []
-    @Published var route: Route = .unspecified
+    @Published var mainRoute: MainRoute = .unspecified
     @Published var nativeAuth: MSALNativeAuthPublicClientApplication?
     @Published var storyCategories: [Category] = [
         .init(id: 1, name: "Family", icon: .init(.family)),
