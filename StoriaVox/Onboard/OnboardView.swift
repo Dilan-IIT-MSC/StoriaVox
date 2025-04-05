@@ -81,12 +81,6 @@ struct OnboardView: View {
                 }
             }
             .tabViewStyle(.page)
-            
-            NavigationLink {
-                
-            } label: {
-                
-            }
 
         }
         .ignoresSafeArea()

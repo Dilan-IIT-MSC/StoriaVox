@@ -41,11 +41,13 @@ struct StoriaVoxApp: App {
                     Text("Attempting auto login...")
                 } else {
                     if UserDefaultsManager.shared.isOnboardTourDone {
-                        LoginView()
+//                        LoginView()
+//                            .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)
+//                            .onAppear {
+//                                appSettings.mainRoute = .login
+//                            }
+                        SignupView()
                             .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)
-                            .onAppear {
-                                appSettings.mainRoute = .login
-                            }
                     } else {
                         OnboardView()
                             .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)

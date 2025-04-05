@@ -9,7 +9,10 @@ import SwiftUI
 
 struct VerificationCodeView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
-    @State private var verificationCode: String = ""
+    @EnvironmentObject internal var appSettings: AppSettings
+    @EnvironmentObject private var bannerState: BannerState
+    @Environment(\.dismiss) private var dismiss
+    @ObservedObject var viewModel: SignupViewModel
     @State private var timeRemaining: Int = 60
     @State private var timer: Timer? = nil
     
@@ -26,25 +29,13 @@ struct VerificationCodeView: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 20)
                 
-                Text("Enter the verification code sent to your email")
+                Text("Verification code has been sent to \(viewModel.email).")
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 50)
                 
                 // Verification code field
-                TextField("", text: $verificationCode, prompt: Text("Enter code")
-                    .foregroundColor(.gray))
-                .textFieldStyle(.plain)
-                .keyboardType(.numberPad)
-                .multilineTextAlignment(.center)
-                .font(.system(size: 24, weight: .medium))
-                .foregroundStyle(.black)
-                .padding(12)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(.accent.opacity(0.1))
-                        .stroke(Color.accentColor, lineWidth: 0.5)
-                )
+                CustomTextField(placeholder: "Enter code", text: $viewModel.verificationCode, errorMessage: $viewModel.verificationCodeError)
                 
                 HStack {
                     if timeRemaining > 0 {
@@ -53,7 +44,7 @@ struct VerificationCodeView: View {
                             .font(.system(size: 14))
                     } else {
                         Button {
-                            // Resend code action
+                            viewModel.resendVerificationCode()
                             resetTimer()
                         } label: {
                             Text("Resend Code")
@@ -66,7 +57,10 @@ struct VerificationCodeView: View {
                 .padding(.top, 16)
                 
                 Button {
-                    // Verification action
+                    if viewModel.verifyCodeLength() {
+                        print("codelength is correct")
+                        viewModel.submitVerificationCode()
+                    }
                 } label: {
                     HStack {
                         Spacer()
@@ -87,9 +81,11 @@ struct VerificationCodeView: View {
                 Spacer()
                 
                 Button {
-                    // Navigate back to login
+                    viewModel.resetForm()
+                    viewModel.path = []
+                    appSettings.mainRoute = .signUp
                 } label: {
-                    Text("Back to Login")
+                    Text("Back to sign up")
                         .foregroundColor(.gray)
                         .underline()
                 }
@@ -105,6 +101,7 @@ struct VerificationCodeView: View {
             }
         }
         .ignoresSafeArea()
+        .banner(isPresent: $bannerState.isShowBanner)
     }
     
     private func startTimer() {
@@ -122,8 +119,4 @@ struct VerificationCodeView: View {
         timeRemaining = 60
         startTimer()
     }
-}
-
-#Preview {
-    VerificationCodeView()
 }

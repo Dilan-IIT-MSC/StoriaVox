@@ -15,9 +15,7 @@ class AuthenticationManager: ObservableObject {
     @Published var user: MSALNativeAuthUserAccountResult?
     @Published var errorMessage: String?
     @Published var isAttemptingAutoLogin = false
-    private var msalClient: MSALNativeAuthPublicClientApplication
-    private let isAuthenticatedKey = "com.codewithdilan.storiavox.isAuthenticated"
-    private let usernameKey = "com.codewithdilan.storiavox.username"
+    var msalClient: MSALNativeAuthPublicClientApplication
     
     static let shared = AuthenticationManager()
     

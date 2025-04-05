@@ -11,7 +11,7 @@ struct AddMetaDataView: View {
     @EnvironmentObject var appSettings: AppSettings
     @State var chipViewHeight: CGFloat = .zero
     @State var storyTitle: String = ""
-    @State var hasStoryTtileError: Bool = false
+    @State var storyTitleError: String? = nil
     
     var body: some View {
         ZStack {
@@ -36,7 +36,7 @@ struct AddMetaDataView: View {
                             Spacer()
                         }
                         
-                        CustomTextField(placeholder: "Title", text: $storyTitle, showError: $hasStoryTtileError)
+                        CustomTextField(placeholder: "Title", text: $storyTitle, errorMessage: $storyTitleError)
                         
                         Divider()
                             .background(.border)

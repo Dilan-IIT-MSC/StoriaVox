@@ -35,4 +35,10 @@ enum MainRoute: Equatable, Hashable {
     }
 }
 
+enum AuthRoute : Equatable, Hashable {
+    case verifyCode
+    case resetPassword
+    case forgotPassword
+}
+
 
