@@ -12,7 +12,7 @@ import AudioKit
 struct CreateStoryView: View {
     @EnvironmentObject var appSettings: AppSettings
     @Environment(\.safeAreaInsets) private var safeAreaInsets
-    @StateObject private var viewModel = CreateStoryViewModel()
+    @StateObject var viewModel = CreateStoryViewModel()
     @State private var recordingURL: URL?
     @State private var showDiscardAlert = false
     @State private var animateVisualizer = false
@@ -60,7 +60,7 @@ struct CreateStoryView: View {
                                     .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 2)
                                     .frame(width: 340, height: 340)
                                 
-                                if let mic = viewModel.engine.input {
+                                if let mic = viewModel.engine?.input {
                                     FFTView(
                                         mic,
                                         barColor: visualizerColor,
@@ -272,16 +272,10 @@ struct CreateStoryView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         if let url = recordingURL {
-                            // Save the current recording with a timestamp name
                             let timestamp = Int(Date().timeIntervalSince1970)
                             if let savedURL = viewModel.saveRecording(as: "story_\(timestamp)") {
-                                // Store the URL in app settings or pass it to the next view
                                 appSettings.lastRecordingURL = savedURL
                                 appSettings.createStoryPaths.append(.storyMetadata)
-                                
-                                // Add haptic feedback on successful save
-                                let generator = UINotificationFeedbackGenerator()
-                                generator.notificationOccurred(.success)
                             } else {
                                 viewModel.showAlert = true
                                 viewModel.alertMessage = "Failed to save the recording"
@@ -314,7 +308,11 @@ struct CreateStoryView: View {
             }
             .ignoresSafeArea(.all)
             .navigationDestination(for: Route.self) { route in
-                // Navigation destinations are handled by the app's navigation system
+                switch route {
+                case .storyMetadata:
+                    AddMetaDataView(audioURL: appSettings.lastRecordingURL!)
+                default: EmptyView()
+                }
             }
             .alert(isPresented: $viewModel.showAlert) {
                 Alert(
