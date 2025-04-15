@@ -28,31 +28,37 @@ struct StoriaVoxApp: App {
                 MainTabView()
                     .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)
             default:
-                if authManager.isAuthenticated {
-                    MainTabView()
-                        .withAppEnvironment(
-                            appSettings: appSettings,
-                            bannerState: bannerState,
-                            loadingState: loadingState)
-                        .onAppear {
-                            appSettings.mainRoute = .home
-                        }
-                } else if authManager.isAttemptingAutoLogin {
-                    Text("Attempting auto login...")
-                } else {
-                    if UserDefaultsManager.shared.isOnboardTourDone {
+                MainTabView()
+                    .withAppEnvironment(
+                        appSettings: appSettings,
+                        bannerState: bannerState,
+                        loadingState: loadingState)
+                    .onAppear {
+                        appSettings.mainRoute = .home
+                    }
+//                if authManager.isAuthenticated {
+//                    MainTabView()
+//                        .withAppEnvironment(
+//                            appSettings: appSettings,
+//                            bannerState: bannerState,
+//                            loadingState: loadingState)
+//                        .onAppear {
+//                            appSettings.mainRoute = .home
+//                        }
+//                } else if authManager.isAttemptingAutoLogin {
+//                    Text("Attempting auto login...")
+//                } else {
+//                    if UserDefaultsManager.shared.isOnboardTourDone {
 //                        LoginView()
 //                            .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)
 //                            .onAppear {
 //                                appSettings.mainRoute = .login
 //                            }
-                        SignupView()
-                            .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)
-                    } else {
-                        OnboardView()
-                            .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)
-                    }
-                }
+//                    } else {
+//                        OnboardView()
+//                            .withAppEnvironment(appSettings: appSettings, bannerState: bannerState, loadingState: loadingState)
+//                    }
+//                }
             }
         }
     }

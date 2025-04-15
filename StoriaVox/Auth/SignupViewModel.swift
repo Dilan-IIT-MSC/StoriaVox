@@ -29,7 +29,7 @@ class SignupViewModel: ObservableObject {
         if email.isEmpty {
             emailError = "Email is required"
             isValid = false
-        } else if !email.isEmail() {
+        } else if !email.isValidEmail() {
             print("not valid")
             emailError = "Enter valid email"
             isValid = false
@@ -92,7 +92,7 @@ extension SignupViewModel: SignUpStartDelegate {
     func signUpUser() {
         let msalClient = AuthenticationManager.shared.msalClient
         do {
-            let parameters = MSALNativeAuthSignUpParameters(username: email)
+            let parameters = MSALNativeAuthSignUpParameters(username: email.lowercased())
             parameters.password = password
             parameters.attributes = ["displayName": name]
             msalClient.signUp(parameters: parameters, delegate: self)
@@ -160,7 +160,6 @@ extension SignupViewModel: SignUpResendCodeDelegate {
     
     func onSignUpResendCodeError(error: MSAL.ResendCodeError, newState: MSAL.SignUpCodeRequiredState?) {
         showError(title: "Resend Verification Code Error", message: error.localizedDescription)
-        print(error.errorDescription)
     }
 }
 
@@ -172,6 +171,7 @@ extension SignupViewModel: SignInAfterSignUpDelegate {
     }
     
     func onSignInCompleted(result: MSALNativeAuthUserAccountResult) {
-        print(result)
+        print(result.account)
+        print(result.idToken)
     }
 }

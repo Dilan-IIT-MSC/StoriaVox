@@ -14,6 +14,7 @@ class AppSettings: ObservableObject {
     @Published var createStoryPaths: [Route] = []
     @Published var homePaths: [Route] = []
     @Published var mainRoute: MainRoute = .unspecified
+    @Published var lastRecordingURL: URL?
     @Published var storyCategories: [Category] = [
         .init(id: 1, name: "Family", icon: .init(.family)),
         .init(id: 2, name: "Life Lessons", icon: .init(.lifeLessons)),
