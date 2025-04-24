@@ -14,3 +14,7 @@ struct User: Codable {
     let bday: String?
     let status: Int
 }
+
+struct DeactivateResponse: Decodable {
+    let userId: Int
+}

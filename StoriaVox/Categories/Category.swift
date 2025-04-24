@@ -17,37 +17,37 @@ struct Category: Codable, Identifiable, Equatable {
     public func getIcon() -> Image {
         switch icon ?? 0 {
         case 1:
-            return Image("icon_family")
+            return Image(.family)
         case 2:
-            return Image("icon_lifeLessons")
+            return Image(.lifeLessons)
         case 3:
-            return Image("icon_culture")
+            return Image(.culture)
         case 4:
-            return Image("icon_childhood")
+            return Image(.childhood)
         case 5:
-            return Image("icon_love")
+            return Image(.love)
         case 6:
-            return Image("icon_career")
+            return Image(.career)
         case 7:
-            return Image("icon_health")
+            return Image(.health)
         case 8:
-            return Image("icon_travel")
+            return Image(.travel)
         case 9:
-            return Image("icon_inspiration")
+            return Image(.inspiration)
         case 10:
-            return Image("icon_history")
+            return Image(.history)
         case 11:
-            return Image("icon_grief")
+            return Image(.grief)
         case 12:
-            return Image("icon_joy")
+            return Image(.joy)
         case 13:
-            return Image("icon_fantasy")
+            return Image(.fantasy)
         case 14:
-            return Image("icon_poetry")
+            return Image(.poetry)
         case 15:
-            return Image("icon_dialogues")
+            return Image(.dialogues)
         case 16:
-            return Image("icon_other")
+            return Image(.other)
         default:
             return Image(systemName: "book")
         }

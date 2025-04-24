@@ -101,8 +101,4 @@ class UserService {
             completion: completion
         )
     }
-    
-    struct DeactivateResponse: Decodable {
-        let userId: Int
-    }
 }
