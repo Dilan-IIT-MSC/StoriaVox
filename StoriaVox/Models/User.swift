@@ -13,6 +13,7 @@ struct User: Codable {
     let lastName: String?
     let bday: String?
     let status: Int
+    let profileImage: String?
 }
 
 struct DeactivateResponse: Decodable {

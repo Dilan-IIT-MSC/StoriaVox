@@ -2,7 +2,7 @@
 //  Story.swift
 //  StoriaVox
 //
-//  Created by Dilan Anuruddha on 2025-04-24.
+//  Created by Dilan Anuruddha on 2025-04-14.
 //
 
 import Foundation
@@ -12,8 +12,8 @@ struct Story: Codable {
     let title: String
     let storyUrl: String?
     let genAudioUrl: String?
-    let created: String
-    let duration: String
+    let created: Date
+    let duration: Double
     let listenCount: Int
     let status: Int
     let author: Author
