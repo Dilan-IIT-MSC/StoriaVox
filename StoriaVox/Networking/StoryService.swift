@@ -8,89 +8,103 @@
 import Foundation
 import Alamofire
 
-// MARK: - Story Response
-struct StoryUploadResponse: Codable {
-    let status: Bool
-    let message: String
-}
-
-
-// MARK: - Story Service
 class StoryService {
     static let shared = StoryService()
     
-    @discardableResult func uploadStory(
-        title: String,
-        audioURL: URL,
-        categoryIds: [Int],
-        completion: @escaping (Result<StoryUploadResponse, Error>) -> Void
-    ) -> UploadRequest? {
-        // Error checking
-        guard !title.isEmpty else {
-            completion(.failure(NSError(domain: "StoryService", code: 1001, userInfo: [NSLocalizedDescriptionKey: "Title cannot be empty"])))
-            return nil
+    private init() {}
+    
+    private enum Endpoints {
+        static let story = "story"
+        static let storyWithId = "story/"
+        static let storyLike = "story/like"
+        static let storyUpload = "story/upload"
+        static let stories = "stories"
+    }
+    
+    func getStories(
+        userId: Int? = nil,
+        categoryId: Int? = nil,
+        order: String = "ascending",
+        completion: @escaping (Result<[Story]?, NetworkError>) -> Void
+    ) {
+        var parameters: [String: Any] = ["order": order]
+        
+        if let userId = userId {
+            parameters["user_id"] = userId
         }
         
-        guard categoryIds.count <= 3 else {
-            completion(.failure(NSError(domain: "StoryService", code: 1002, userInfo: [NSLocalizedDescriptionKey: "Maximum 3 categories allowed"])))
-            return nil
+        if let categoryId = categoryId {
+            parameters["category_id"] = categoryId
         }
         
-        guard FileManager.default.fileExists(atPath: audioURL.path) else {
-            completion(.failure(NSError(domain: "StoryService", code: 1003, userInfo: [NSLocalizedDescriptionKey: "Audio file not found"])))
-            return nil
-        }
-        
-        let userId = 2
-        
-        let categoriesJSON: String
-        do {
-            let data = try JSONSerialization.data(withJSONObject: categoryIds, options: [])
-            categoriesJSON = String(data: data, encoding: .utf8) ?? "[]"
-        } catch {
-            completion(.failure(error))
-            return nil
-        }
-        
-        var uploadRequest: UploadRequest?
-        uploadRequest = NetworkService.shared.upload(
-            multipartFormData: { multipartFormData in
-                if let userIdData = "\(userId)".data(using: .utf8) {
-                    multipartFormData.append(userIdData, withName: "user_id")
-                }
-                
-                if let titleData = title.data(using: .utf8) {
-                    multipartFormData.append(titleData, withName: "title")
-                }
-                
-                if let categoriesData = categoriesJSON.data(using: .utf8) {
-                    multipartFormData.append(categoriesData, withName: "categories")
-                }
-                
-                multipartFormData.append(audioURL, withName: "audio", fileName: audioURL.lastPathComponent, mimeType: "audio/aac")
-            },
-            to: "story/upload",
+        NetworkService.shared.performRequest(
+            endpoint: Endpoints.stories,
             method: .post,
-            authType: .function
-        ) { (result: Result<StoryUploadResponse, Error>) in
-            switch result {
-            case .success(let uploadResponse):
-                if uploadResponse.status{
-                    completion(.success(uploadResponse))
-                } else {
-                    let errorMessage = uploadResponse.message
-                    completion(.failure(NSError(domain: "StoryService", code: 1004, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
-                }
-                
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-        uploadRequest?.uploadProgress { progress in
-            print("Upload Progress: \(progress.fractionCompleted)")
+            parameters: parameters,
+            encoding: JSONEncoding.default,
+            dataField: "stories",
+            completion: completion
+        )
+    }
+    
+    func getStoryDetail(
+        storyId: Int,
+        completion: @escaping (Result<Story?, NetworkError>) -> Void
+    ) {
+        NetworkService.shared.performRequest(
+            endpoint: Endpoints.storyWithId + "\(storyId)",
+            method: .get,
+            dataField: "story",
+            completion: completion
+        )
+    }
+    
+    func updateStoryLike(
+        storyId: Int,
+        userId: Int,
+        action: LikeAction,
+        completion: @escaping (Result<LikeResponse?, NetworkError>) -> Void
+    ) {
+        let parameters: [String: Any] = [
+            "story_id": storyId,
+            "user_id": userId,
+            "action": action.rawValue
+        ]
+        
+        NetworkService.shared.performRequest(
+            endpoint: Endpoints.storyLike,
+            method: .post,
+            parameters: parameters,
+            encoding: JSONEncoding.default,
+            completion: completion
+        )
+    }
+    
+    func uploadStory(
+        userId: Int,
+        title: String,
+        categories: [Int],
+        audioData: Data,
+        completion: @escaping (Result<Story?, NetworkError>) -> Void
+    ) {
+        if categories.count > 3 {
+            completion(.failure(.serverMessage("Maximum 3 categories allowed")))
+            return
         }
         
-        return uploadRequest
+        NetworkService.shared.upload(
+            multipartFormData: { multipartFormData in
+                multipartFormData.append(Data("\(userId)".utf8), withName: "user_id")
+                multipartFormData.append(Data(title.utf8), withName: "title")
+                if let categoriesData = try? JSONSerialization.data(withJSONObject: categories),
+                   let categoriesString = String(data: categoriesData, encoding: .utf8) {
+                    multipartFormData.append(Data(categoriesString.utf8), withName: "categories")
+                }
+                multipartFormData.append(audioData, withName: "audio", fileName: "recording.aac", mimeType: "audio/aac")
+            },
+            to: Endpoints.storyUpload,
+            dataField: "story",
+            completion: completion
+        )
     }
 }
-
