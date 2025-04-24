@@ -21,7 +21,7 @@ class MetaDataViewModel: ObservableObject {
     @Published var showAlert = false
     @Published var alertMessage = ""
     @Published var errorMessage: String?
-    @Published var selectedCategories: Set<Int32> = []
+    @Published var selectedCategories: Set<Int> = []
     
         
         @Published var amplitudes: [CGFloat] = {
