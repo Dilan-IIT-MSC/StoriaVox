@@ -9,16 +9,28 @@ import SwiftUI
 
 struct CategoryChipView: View {
     @State private var isSelected: Bool = false
+    @Binding var selectedCategories: Set<Int>
     var category: Category
     
     var body: some View {
         Button {
-            withAnimation {
-                isSelected.toggle()
+            if isSelected {
+                selectedCategories.remove(category.id)
+                withAnimation {
+                    isSelected.toggle()
+                }
+            } else {
+                if selectedCategories.count < 3 && !selectedCategories.contains(category.id){
+                    selectedCategories.insert(category.id)
+                    withAnimation {
+                        isSelected.toggle()
+                    }
+                }
             }
+            
         } label: {
             HStack {
-                CategoryIconView(icon: category.icon)
+                CategoryIconView(icon: category.getIcon())
                 
                 Text(category.name)
                     .font(.system(size: 16))
@@ -38,5 +50,7 @@ struct CategoryChipView: View {
 }
 
 #Preview {
-    CategoryChipView(category: .init(id: 222, name: "Sample Category", icon: .init(.love)))
+    CategoryChipView(
+        selectedCategories: .constant([]),
+        category: .init(id: 222, name: "Love", description: "love description", icon: 3))
 }

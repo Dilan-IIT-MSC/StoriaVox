@@ -12,15 +12,17 @@ import AVFoundation
 
 class MetaDataViewModel: ObservableObject {
     private var timer: Timer?
-        private var audioPlayer: AVAudioPlayer?
-        private var meterTimer: Timer?
-        @Published var audioURL: URL?
-        @Published var isPlaying = false
-        @Published var playbackTime: TimeInterval = 0
-        @Published var duration: TimeInterval = 0
-        @Published var showAlert = false
-        @Published var alertMessage = ""
-        @Published var errorMessage: String?
+    private var audioPlayer: AVAudioPlayer?
+    private var meterTimer: Timer?
+    @Published var audioURL: URL?
+    @Published var isPlaying = false
+    @Published var playbackTime: TimeInterval = 0
+    @Published var duration: TimeInterval = 0
+    @Published var showAlert = false
+    @Published var alertMessage = ""
+    @Published var errorMessage: String?
+    @Published var selectedCategories: Set<Int32> = []
+    
         
         @Published var amplitudes: [CGFloat] = {
             var amps = [CGFloat]()
@@ -154,7 +156,7 @@ class MetaDataViewModel: ObservableObject {
                 self.duration = duration
             } catch {
                 print("Failed to create silent audio: \(error.localizedDescription)")
-                self.duration = 30.0
+                self.duration = 600.0
             }
         }
         

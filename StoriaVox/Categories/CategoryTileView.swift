@@ -27,7 +27,7 @@ struct CategoryTileView: View {
             .frame(width: 176, height: 96)
             
             HStack(alignment: .center) {
-                CategoryIconView(icon: category.icon)
+                CategoryIconView(icon: category.getIcon())
 
                 VStack(alignment: .leading) {
                     Text(category.name)
@@ -72,5 +72,5 @@ struct CategoryTileView: View {
 }
 
 #Preview {
-    CategoryTileView(category: .init(id: 22, name: "sample", icon: .init(.love)))
+    CategoryTileView(category: .init(id: 22, name: "Family", description: "family description", icon: 0))
 }

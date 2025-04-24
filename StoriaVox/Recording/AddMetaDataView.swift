@@ -144,7 +144,10 @@ struct AddMetaDataView: View {
                                 GeometryReader { geo in
                                     ZStack(alignment: .topLeading, content: {
                                         ForEach(0..<appSettings.storyCategories.count, id: \.self) { index in
-                                            CategoryChipView(category: appSettings.storyCategories[index])
+                                            CategoryChipView(
+                                                selectedCategories: $viewModel.selectedCategories,
+                                                category: appSettings.storyCategories[index]
+                                            )
                                                 .padding(.all, 5)
                                                 .alignmentGuide(.leading) { dimension in
                                                     if (abs(width - dimension.width) > geo.size.width) {
@@ -232,9 +235,6 @@ struct AddMetaDataView: View {
                 message: Text(viewModel.alertMessage),
                 dismissButton: .default(Text("OK"))
             )
-        }
-        .onDisappear {
-            viewModel.cleanup()
         }
     }
     

@@ -16,22 +16,22 @@ class AppSettings: ObservableObject {
     @Published var mainRoute: MainRoute = .unspecified
     @Published var lastRecordingURL: URL?
     @Published var storyCategories: [Category] = [
-        .init(id: 1, name: "Family", icon: .init(.family)),
-        .init(id: 2, name: "Life Lessons", icon: .init(.lifeLessons)),
-        .init(id: 3, name: "Culture", icon: .init(.culture)),
-        .init(id: 4, name: "Childhood", icon: .init(.childhood)),
-        .init(id: 5, name: "Love", icon: .init(.love)),
-        .init(id: 6, name: "Career", icon: .init(.career)),
-        .init(id: 7, name: "Health", icon: .init(.health)),
-        .init(id: 8, name: "Travel", icon: .init(.travel)),
-        .init(id: 9, name: "Inspiration", icon: .init(.inspiration)),
-        .init(id: 10, name: "History", icon: .init(.history)),
-        .init(id: 11, name: "Grief", icon: .init(.grief)),
-        .init(id: 12, name: "Joy", icon: .init(.joy)),
-        .init(id: 13, name: "Fantasy", icon: .init(.fantasy)),
-        .init(id: 14, name: "Poetry", icon: .init(.poetry)),
-        .init(id: 15, name: "Dialogues", icon: .init(.dialogues)),
-        .init(id: 16, name: "Other", icon: .init(.other))
+        .init(id: 1, name: "Family", description: "Stories of kinship, bonds, and unforgettable ties.", icon: 1),
+        .init(id: 2, name: "Life Lessons", description: "Wisdom gained through trials, errors, and triumphs.", icon: 2),
+        .init(id: 3, name: "Culture", description: "Tales rooted in tradition, heritage, and identity.", icon: 3),
+        .init(id: 4, name: "Childhood", description: "Nostalgic journeys through the eyes of youth.", icon: 4),
+        .init(id: 5, name: "Love", description: "Heartfelt tales of passion, connection, and romance.", icon: 5),
+        .init(id: 6, name: "Career", description: "Experiences from the climb, fall, and growth at work.", icon: 6),
+        .init(id: 7, name: "Health", description: "Journeys of healing, wellness, and resilience.", icon: 7),
+        .init(id: 8, name: "Travel", description: "Adventures from distant lands and local gems.", icon: 8),
+        .init(id: 9, name: "Inspiration", description: "Uplifting narratives that spark motivation and hope.", icon: 9),
+        .init(id: 10, name: "History", description: "Echoes from the past that shaped our present.", icon: 10),
+        .init(id: 11, name: "Grief", description: "Reflections on loss, mourning, and moving forward.", icon: 11),
+        .init(id: 12, name: "Joy", description: "Moments of happiness, celebration, and delight.", icon: 12),
+        .init(id: 13, name: "Fantasy", description: "Imaginative worlds where magic and wonder thrive.", icon: 13),
+        .init(id: 14, name: "Poetry", description: "Rhythmic tales woven with emotion and depth.", icon: 14),
+        .init(id: 15, name: "Dialogues", description: "Conversational stories with meaningful exchanges.", icon: 15),
+        .init(id: 16, name: "Other", description: "Unique narratives beyond the usual categories.", icon: 16)
     ]
     
     init() {
