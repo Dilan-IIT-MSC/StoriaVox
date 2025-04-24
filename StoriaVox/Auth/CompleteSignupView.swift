@@ -105,7 +105,8 @@ struct CompleteSignupView: View {
                                 GeometryReader { geo in
                                     ZStack(alignment: .topLeading, content: {
                                         ForEach(0..<appSettings.storyCategories.count, id: \.self) { index in
-                                            CategoryChipView(category: appSettings.storyCategories[index])
+                                            CategoryChipView(selectedCategories: .constant([]),
+                                                category: appSettings.storyCategories[index])
                                                 .padding(.all, 5)
                                                 .alignmentGuide(.leading) { dimension in
                                                     if (abs(width - dimension.width) > geo.size.width) {
