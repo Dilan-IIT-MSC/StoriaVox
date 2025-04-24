@@ -9,14 +9,16 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
-    @State private var emailAddress: String = ""
-    @State private var password: String = ""
+    @EnvironmentObject internal var appSettings: AppSettings
+    @EnvironmentObject private var bannerState: BannerState
+    @EnvironmentObject var loadingState: LoadingState
+    @StateObject var viewModel: LoginViewModel = .init()
     
     var body: some View {
         ZStack {
             Color.background
             
-            VStack(spacing: 0) {
+            VStack(spacing: 16) {
                 Spacer()
                 
                 Text("Welcome back to StoriaVox!")
@@ -26,61 +28,41 @@ struct LoginView: View {
                     .padding(.bottom, 50)
                 
                 
-                TextField("", text: $emailAddress, prompt: Text("Email")
-                    .foregroundColor(.gray))
-                .textFieldStyle(.plain)
-                .textContentType(.emailAddress)
-                .foregroundStyle(.black)
-                .frame(height: 50)
-                .padding(.horizontal, 16)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.accent.opacity(0.1))
-                        .stroke(Color.accentColor, lineWidth: 0.5)
-                )
+                CustomTextField(placeholder: "Email", text: $viewModel.email, errorMessage: $viewModel.emailError)
                 
-                SecureField("", text: $password, prompt: Text("Password")
-                    .foregroundColor(.gray))
-                .frame(height: 50)
-                .padding(.horizontal, 16)
-                .textInputAutocapitalization(.never)
-                .keyboardType(.asciiCapable)
-                .autocorrectionDisabled(true)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(.accent.opacity(0.1))
-                        .stroke(Color.accentColor, lineWidth: 0.5)
-                )
-                .padding(.top, 24)
-                
-                HStack(alignment: .center, spacing: 0) {
-                    Spacer()
+                VStack(spacing: 4) {
+                    CustomSecureTextField(placeholder: "Password", text: $viewModel.password, errorMessage: $viewModel.passwordError)
                     
-                    Button {
+                    HStack(alignment: .center, spacing: 0) {
+                        Spacer()
                         
-                    } label: {
-                        Text("Forgot Password?")
-                            .foregroundColor(.gray)
-                            .fontWeight(.regular)
+                        Button {
+                            
+                        } label: {
+                            Text("Forgot Password?")
+                                .foregroundColor(.gray)
+                                .font(.system(size: 14))
+                        }
                     }
                 }
-                .padding(.top, 8)
                 
                 Button {
-                    
+                    if viewModel.isFormValid() {
+                        viewModel.login()
+                    }
                 } label: {
                     HStack {
                         Spacer()
                         
                         Text("Sign In")
-                            .font(.system(size: 24, weight: .medium))
+                            .font(.system(size: 20, weight: .medium))
                             .foregroundStyle(.white)
                         
                         Spacer()
                     }
                     .padding(.vertical, 12)
                     .background(Color.accentColor)
-                    .cornerRadius(16)
+                    .cornerRadius(8)
                     .contentShape(Rectangle())
                 }
                 .padding(.top, 24)
@@ -92,9 +74,10 @@ struct LoginView: View {
                     
                     Text("Don't have an account?")
                         .foregroundColor(.gray)
+                        .font(.system(size: 14))
                     
                     Button {
-                        
+                        appSettings.mainRoute = .signUp
                     } label: {
                         Text("Sign Up")
                             .foregroundColor(.accentColor)
@@ -110,6 +93,10 @@ struct LoginView: View {
             .padding(.horizontal, 16)
         }
         .ignoresSafeArea()
+        .onAppear {
+            let user = AuthenticationManager.shared.msalClient.getNativeAuthUserAccount()
+            print("logged in user \(user?.account.username)")
+        }
     }
 }
 

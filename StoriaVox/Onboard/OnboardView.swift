@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct OnboardView: View {
+    @EnvironmentObject internal var appSettings: AppSettings
+    @EnvironmentObject private var bannerState: BannerState
+    @EnvironmentObject var loadingState: LoadingState
     @State private var selectedIndex: Int = 0
 
     var body: some View {
@@ -40,7 +43,8 @@ struct OnboardView: View {
                         Button {
                             withAnimation {
                                 if selectedIndex == intros.count - 1 {
-                                    // UserDefaults.standard.set(true, forKey: "onboardCompleted")
+                                    UserDefaultsManager.shared.isOnboardTourDone = true
+                                    appSettings.mainRoute = .signUp
                                 } else {
                                     selectedIndex += 1
                                 }
@@ -77,15 +81,10 @@ struct OnboardView: View {
                 }
             }
             .tabViewStyle(.page)
-            
-            NavigationLink {
-                
-            } label: {
-                
-            }
 
         }
         .ignoresSafeArea()
+        .banner(isPresent: $bannerState.isShowBanner)
     }
     
     @ViewBuilder

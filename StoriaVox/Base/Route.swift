@@ -14,8 +14,31 @@ enum Route: Equatable, Hashable {
     case signUp
     case recording
     case listening
+    case allCategories
+    case storyListing
+    case storyMetadata
+    case storyUpload
     
     public init() {
         self = .unspecified
     }
 }
+
+enum MainRoute: Equatable, Hashable {
+    case unspecified
+    case home
+    case login
+    case signUp
+    
+    public init() {
+        self = .unspecified
+    }
+}
+
+enum AuthRoute : Equatable, Hashable {
+    case verifyCode
+    case resetPassword
+    case forgotPassword
+}
+
+

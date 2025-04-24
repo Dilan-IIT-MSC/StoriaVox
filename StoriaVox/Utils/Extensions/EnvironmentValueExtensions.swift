@@ -29,3 +29,17 @@ private extension UIEdgeInsets {
         EdgeInsets(top: top, leading: left, bottom: bottom, trailing: right)
     }
 }
+
+extension View {
+    func withAppEnvironment(
+        appSettings: AppSettings,
+        bannerState: BannerState,
+        loadingState: LoadingState
+    ) -> some View {
+        self
+            .environmentObject(appSettings)
+            .environmentObject(bannerState)
+            .environmentObject(loadingState)
+            .withLoading(loadingState: loadingState)
+    }
+}
