@@ -6,11 +6,21 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ProfileView: View {
-    @State private var userName = "StoryTeller Alex"
-    @State private var userBio = "Capturing life's moments one story at a time. Adventure seeker and memory keeper."
-    @State private var memberSince = "March 2025"
+    @EnvironmentObject var appSettings: AppSettings
+    @StateObject var viewModel: ProfileViewModel = .init()
+    
+    @State internal var userName: String = "John Doe"
+    @State internal var memberSince: String = "April 2024"
+    @State internal var userBio: String = "This is a sample bio text which can be edited by clicking on the pencil icon."
+    
+    @State internal var isEditingBio: Bool = false
+    @State internal var editedBio: String = ""
+    @State internal var selectedItem: PhotosPickerItem?
+    @State internal var profileImage: Image?
+    @State internal var uiProfileImage: UIImage?
     
     @State private var publishedStories = 17
     @State private var totalListeners = 2356
@@ -43,10 +53,10 @@ struct ProfileView: View {
     ]
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $appSettings.profilePaths) {
             ScrollView {
                 VStack(spacing: 24) {
-                    profileHeaderSection
+                    header()
                     
                     statsGridSection
                     
@@ -69,56 +79,10 @@ struct ProfileView: View {
                     }
                 }
             }
-        }
-    }
-    
-    // MARK: - Profile Header Section
-    private var profileHeaderSection: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 24)
-                .fill(
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.accentColor.opacity(0.8), Color.accentColor.opacity(0.5)]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(height: 200)
-            
-            HStack(spacing: 20) {
-                ZStack {
-                    Circle()
-                        .fill(Color.white)
-                        .frame(width: 100, height: 100)
-                        .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
-                    
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(Color.gray.opacity(0.8))
-                }
+            .navigationDestination(for: Route.self) { route in
                 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(userName)
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(.white)
-                    
-                    Text("Member since \(memberSince)")
-                        .font(.subheadline)
-                        .foregroundColor(Color.white.opacity(0.8))
-                    
-                    Text(userBio)
-                        .font(.caption)
-                        .foregroundColor(Color.white.opacity(0.9))
-                        .lineLimit(3)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .padding(.trailing, 8)
             }
-            .padding(.horizontal, 20)
         }
-        .padding(.top, 16)
     }
     
     private var statsGridSection: some View {
@@ -258,40 +222,6 @@ struct ProfileView: View {
     }
 }
 
-struct StatCard: View {
-    let icon: String
-    let value: String
-    let label: String
-    let color: Color
-    
-    var body: some View {
-        VStack(spacing: 10) {
-            ZStack {
-                Circle()
-                    .fill(color.opacity(0.2))
-                    .frame(width: 50, height: 50)
-                
-                Image(systemName: icon)
-                    .font(.system(size: 22))
-                    .foregroundColor(color)
-            }
-            
-            Text(value)
-                .font(.system(size: 18, weight: .bold))
-                .foregroundColor(.primary)
-            
-            Text(label)
-                .font(.caption)
-                .foregroundColor(.gray)
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 16)
-        .background(color.opacity(0.05))
-        .cornerRadius(16)
-    }
-}
-
 struct StoryRow: View {
     let story: StoryItem
     
@@ -363,8 +293,6 @@ struct StoryItem {
 // MARK: - Preview
 struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            ProfileView()
-        }
+        ProfileView().environmentObject(AppSettings())
     }
 }
