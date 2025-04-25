@@ -10,7 +10,7 @@ import SwiftUI
 import MSAL
 
 class AuthenticationManager: ObservableObject {
-    @Published var path: [Route] = []
+    //@Published var path: [Route] = []
     @Published var isAuthenticated = false
     @Published var user: MSALNativeAuthUserAccountResult?
     @Published var errorMessage: String?

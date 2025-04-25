@@ -114,7 +114,6 @@ extension SignupViewModel: SignUpStartDelegate {
 extension SignupViewModel: SignUpVerifyCodeDelegate {
     func onSignUpVerifyCodeError(error: MSAL.VerifyCodeError, newState: MSAL.SignUpCodeRequiredState?) {
         self.showError(title: "Verification Code Error", message: error.localizedDescription)
-        print(error.errorDescription)
     }
     
     func onSignUpCompleted(newState: SignInAfterSignUpState) {
@@ -136,10 +135,7 @@ extension SignupViewModel: SignUpVerifyCodeDelegate {
     
     internal func submitVerificationCode() {
         if let newState = newState {
-            print("submit code")
             newState.submitCode(code: verificationCode, delegate: self)
-        } else {
-            print("no new state")
         }
     }
 }
@@ -166,12 +162,15 @@ extension SignupViewModel: SignUpResendCodeDelegate {
 // MARK: SignIn after signup
 extension SignupViewModel: SignInAfterSignUpDelegate {
     func onSignInAfterSignUpError(error: MSAL.SignInAfterSignUpError) {
-        print(error.errorDescription)
         showError(title: "Sign In Error", message: error.localizedDescription)
     }
     
     func onSignInCompleted(result: MSALNativeAuthUserAccountResult) {
+        print("Sign in completed after signup")
         print(result.account)
-        print(result.idToken)
+        DispatchQueue.main.async {
+            self.path = [.completeSignUp]
+        }
+        showSuccess(title: "Success", message: "Account created successfully! Please complete your profile.")
     }
 }

@@ -105,11 +105,19 @@ struct SignupView: View {
             .navigationDestination(for: AuthRoute.self) { route in
                 switch route {
                 case .forgotPassword:
-                    Text("")
+                    ForgotPasswordView()
+                        .environmentObject(appSettings)
+                        .environmentObject(bannerState)
                 case .resetPassword:
-                    Text("")
+                    ResetPasswordView()
+                        .environmentObject(appSettings)
+                        .environmentObject(bannerState)
                 case .verifyCode:
                     VerificationCodeView(viewModel: viewModel)
+                        .environmentObject(appSettings)
+                        .environmentObject(bannerState)
+                case .completeSignUp:
+                    CompleteSignupView()
                         .environmentObject(appSettings)
                         .environmentObject(bannerState)
                 }

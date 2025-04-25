@@ -93,6 +93,7 @@ struct LoginView: View {
             .padding(.horizontal, 16)
         }
         .ignoresSafeArea()
+        .banner(isPresent: $bannerState.isShowBanner)
         .onAppear {
             let user = AuthenticationManager.shared.msalClient.getNativeAuthUserAccount()
             print("logged in user \(user?.account.username)")
