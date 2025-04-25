@@ -40,14 +40,4 @@ class AuthenticationManager: ObservableObject {
             fatalError("Failed to initialize MSAL client: \(error)")
         }
     }
-    
-    func signOut() {
-        if let user = msalClient.getNativeAuthUserAccount() {
-            let parameters: MSALSignoutParameters = .init()
-            parameters.signoutFromBrowser = true
-            msalClient.signout(with: user.account, signoutParameters: parameters) { isSignOut ,error in
-                
-            }
-        }
-    }
 }

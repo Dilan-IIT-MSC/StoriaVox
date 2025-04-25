@@ -43,28 +43,30 @@ struct ProfileView: View {
     ]
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                profileHeaderSection
-                
-                statsGridSection
-                
-                storiesSection
-                
-                activitySection
-                
-                Spacer(minLength: 60)
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 24) {
+                    profileHeaderSection
+                    
+                    statsGridSection
+                    
+                    storiesSection
+                    
+                    activitySection
+                    
+                    Spacer(minLength: 60)
+                }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
-        }
-        .background(Color(.systemGray6))
-        .navigationTitle("Profile")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {}) {
-                    Image(systemName: "gearshape.fill")
-                        .foregroundColor(.primary)
+            .background(Color(.systemGray6))
+            .navigationTitle("Profile")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {}) {
+                        Image(systemName: "gearshape.fill")
+                            .foregroundColor(.primary)
+                    }
                 }
             }
         }
