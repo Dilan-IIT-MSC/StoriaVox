@@ -13,6 +13,7 @@ struct Category: Codable, Identifiable, Equatable {
     let name: String
     let description: String
     let icon: Int?
+    let imageURL: String?
     
     public func getIcon() -> Image {
         switch icon ?? 0 {
@@ -52,4 +53,10 @@ struct Category: Codable, Identifiable, Equatable {
             return Image(systemName: "book")
         }
     }
+}
+
+struct CategoriesResponse: Codable {
+    let status: Bool
+    let message: String
+    let categories: [Category]
 }
