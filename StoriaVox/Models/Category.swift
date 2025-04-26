@@ -58,5 +58,10 @@ struct Category: Codable, Identifiable, Equatable {
 struct CategoriesResponse: Codable {
     let status: Bool
     let message: String
-    let categories: [Category]
+    let categories: [CategoryData]
+}
+
+struct CategoryData: Codable {
+    let category: Category
+    let storyCount: Int
 }

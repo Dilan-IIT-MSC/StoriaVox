@@ -10,6 +10,7 @@ import SwiftUI
 struct AllCategoriesView: View {
     @EnvironmentObject var appSettings: AppSettings
     @EnvironmentObject var loadingState: LoadingState
+    @EnvironmentObject private var bannerState: BannerState
     @StateObject var viewModel: CategoryViewModel = .init()
     private let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 16),
@@ -27,19 +28,22 @@ struct AllCategoriesView: View {
                             Button {
                                 appSettings.homePaths.append(.storyListing)
                             } label: {
-                                CategoryTileView(category: viewModel.categories[index])
+                                CategoryTileView(categoryData: viewModel.categories[index])
                                     .contentShape(Rectangle())
                             }
-                            .id(viewModel.categories[index].id)
+                            .id(viewModel.categories[index].category.id)
                         }
                     }
                 }
                 .refreshable {
                     viewModel.fetchCategories()
                 }
+                
+                Spacer(minLength: 32)
             }
             .padding(.horizontal, 16)
         }
+        .banner(isPresent: $bannerState.isShowBanner)
         .navigationTitle("All Categories")
         .onAppear {
             viewModel.fetchCategories()

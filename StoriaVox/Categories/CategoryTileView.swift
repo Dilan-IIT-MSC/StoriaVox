@@ -8,28 +8,33 @@
 import SwiftUI
 
 struct CategoryTileView: View {
-    var category: Category
+    var categoryData: CategoryData
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 0) {
-                categoryImage(url: category.imageURL ?? "")
+                categoryImage(url: categoryData.category.imageURL ?? "")
             }
             .frame(height: 150)
             
             HStack(alignment: .center) {
-                CategoryIconView(icon: category.getIcon())
+                CategoryIconView(icon: categoryData.category.getIcon())
 
                 VStack(alignment: .leading) {
-                    Text(category.name)
+                    Text(categoryData.category.name)
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.title)
                         .fontDesign(.rounded)
                     
-                    Text("\(Int.random(in: 0...1000)) Stories")
-                        .font(.system(size: 13, weight: .light))
-                        .foregroundStyle(.secondValue)
+                    if categoryData.storyCount > 1 {
+                        Text("\(categoryData.storyCount) Stories")
+                            .font(.system(size: 13, weight: .light))
+                            .foregroundStyle(.secondValue)
+                    } else {
+                        Text("No Stories yet")
+                            .font(.system(size: 13, weight: .light))
+                            .foregroundStyle(.secondValue)
+                    }
                 }
-
                 
                 Spacer()
             }
@@ -64,5 +69,5 @@ struct CategoryTileView: View {
 }
 
 #Preview {
-    CategoryTileView(category: .init(id: 22, name: "Family", description: "family description", icon: 0, imageURL: nil))
+    CategoryTileView(categoryData: CategoryData(category: Category(id: 1, name: "", description: "", icon: 3, imageURL: ""), storyCount: 2334))
 }

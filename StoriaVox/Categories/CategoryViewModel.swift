@@ -8,16 +8,16 @@
 import Foundation
 
 class CategoryViewModel: ObservableObject {
-    @Published var categories: [Category] = []
+    @Published var categories: [CategoryData] = []
     
     internal func fetchCategories() {
         CategoryService.shared.getCategories { response in
-            print("xxx response: \(response)")
             switch response {
             case .success(let categoriesResponse):
                 self.categories = categoriesResponse.categories
+                BannerHandler.shared.showSuccessBanner(title: "Success", message: "Categories fetched successfully.", isAutoHide: true)
             case .failure(let error):
-                print("Error fetching categories: \(error)")
+                BannerHandler.shared.showErrorBanner(title: "Error", message: error.localizedDescription, isAutoHide: true)
             }
         }
     }
