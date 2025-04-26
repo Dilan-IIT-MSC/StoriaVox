@@ -19,6 +19,15 @@ class UserService {
         static let userByEmail = "user/email/"
         static let profileImage = "/profile-image"
         static let userCategories = "user_preferred_categories"
+        static let storyTellers = "users/storytellers"
+    }
+    
+    func getStoryTellers(completion: @escaping (Result<AuthorResponse, NetworkError>) -> Void) {
+        NetworkService.shared.performRequest(
+            endpoint: Endpoints.storyTellers,
+            method: .get,
+            completion: completion
+        )
     }
     
     func getUser(byId userId: Int, completion: @escaping (Result<User?, NetworkError>) -> Void) {

@@ -21,6 +21,12 @@ struct User: Codable {
     let updated: String?
 }
 
+struct AuthorResponse: Codable {
+    let status: Bool
+    let message: String
+    let authors: [Author]
+}
+
 struct Author: Codable {
     let id: Int
     let firstName: String
