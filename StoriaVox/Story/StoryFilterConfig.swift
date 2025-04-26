@@ -16,13 +16,14 @@ protocol Filterable {
 struct StoryFilterConfig: Filterable {
     var uuid: UUID = UUID()
     var searchText: String = ""
-    var isFiltered: Bool = false 
+    var isFiltered: Bool {
+        return !searchText.isEmpty || selectedAuthor != nil || selectedCategory != nil
+    }
     var selectedAuthor: Author?
     var selectedCategory: Category?
     var sortOrder: SortOrder = .newest
     
     mutating func clearFilter() {
-        self.isFiltered = false
         self.searchText = ""
         self.selectedAuthor = nil
         self.selectedCategory = nil

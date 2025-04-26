@@ -154,8 +154,9 @@ extension DiscoverView {
                         Button {
                             appSettings.homePaths.append(.storyListing)
                         } label: {
-                            CategoryTileView(category: appSettings.storyCategories[index])
-                                .contentShape(Rectangle())
+                            Text("Category \(index + 1)")
+//                            CategoryTileView(category: appSettings.storyCategories[index])
+//                                .contentShape(Rectangle())
                         }
                     }
                 }

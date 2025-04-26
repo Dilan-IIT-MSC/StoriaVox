@@ -80,13 +80,15 @@ class NetworkService {
         ).validate()
         
         request.responseData { response in
+            print(response.response)
+            print(response.result)
             switch response.result {
             case .success(let data):
                 do {
                     if let keyPath = keyPath {
-                        // Decode from a specific keyPath if provided
                         if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                            let nestedData = json[keyPath] {
+                            print(json)
                             let nestedDataJson = try JSONSerialization.data(withJSONObject: nestedData)
                             let decoded = try JSONDecoder().decode(T.self, from: nestedDataJson)
                             completion(.success(decoded))
@@ -102,7 +104,6 @@ class NetworkService {
                             }
                         }
                     } else {
-                        // Direct decoding of the entire response
                         let decoder = JSONDecoder()
                         decoder.dateDecodingStrategy = .iso8601
                         
@@ -110,11 +111,11 @@ class NetworkService {
                             let decoded = try decoder.decode(T.self, from: data)
                             completion(.success(decoded))
                         } catch {
-                            // If direct decoding fails, check if we have a status/message error format
                             if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                                let status = json["status"] as? Bool,
                                !status,
                                let message = json["message"] as? String {
+                                print(json)
                                 completion(.failure(.serverMessage(message)))
                             } else {
                                 completion(.failure(.decodingError(error)))

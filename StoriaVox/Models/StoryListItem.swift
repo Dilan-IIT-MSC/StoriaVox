@@ -11,12 +11,11 @@ struct StoryListItem: Codable {
     let id: Int
     let title: String
     let thumbnailUrl: String?
-    let created: Date
-    let duration: Double
+    let duration: String
     let listenCount: Int
     let author: Author
     let likeCount: Int
-    let categories: [Category]?
+    let categories: [Category]
 }
 
 enum LikeAction: String {
@@ -27,6 +26,5 @@ enum LikeAction: String {
 struct StoryListResponse: Codable {
     let status: Bool
     let message: String
-    let category: Category
     let stories: [StoryListItem]
 }

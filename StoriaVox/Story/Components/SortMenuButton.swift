@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct SortMenuButton: View {
-    @Binding var selectedSort: SortOrder
     @State private var showSortOptions: Bool = false
+    @Binding var selectedSort: SortOrder
+    var onDismiss: (() -> Void)?
     
     var body: some View {
         Menu {
             ForEach(SortOrder.allCases) { option in
                 Button(action: {
                     selectedSort = option
+                    onDismiss?()
                 }) {
                     Label(option.rawValue, systemImage: option.systemImage)
                 }

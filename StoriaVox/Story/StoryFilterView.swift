@@ -9,8 +9,13 @@ import Foundation
 import SwiftUI
 
 struct StoryFilterView: View {
+    @Environment(\.dismiss) var dismiss
     @State private var path: [String] = []
     @Binding var filterConfig: StoryFilterConfig
+    var authors: [Author]
+    var categories: [Category]
+    
+    var onDismiss: (() -> Void)?
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -22,7 +27,7 @@ struct StoryFilterView: View {
                         path.append("Author")
                     }
                     
-                    FilterDropdownView<Author>(title: "Category", placeholder: "Select Category", value: $filterConfig.selectedAuthor) {
+                    FilterDropdownView<Category>(title: "Category", placeholder: "Select Category", value: $filterConfig.selectedCategory) {
                         path.append("Category")
                     }
 
@@ -30,7 +35,8 @@ struct StoryFilterView: View {
                     
                     Button(action: {
                         withAnimation {
-                            
+                            onDismiss?()
+                            dismiss()
                         }
                     }) {
                         Text("Apply Filters")
@@ -50,9 +56,9 @@ struct StoryFilterView: View {
                 .navigationDestination(for: String.self) { item in
                     switch item {
                     case "Author":
-                        SelectionView<Author>(selectedItem: $filterConfig.selectedAuthor, items: [])
+                        SelectionView<Author>(selectedItem: $filterConfig.selectedAuthor, items: authors)
                     case "Category":
-                        SelectionView<Category>(selectedItem: $filterConfig.selectedCategory, items: [])
+                        SelectionView<Category>(selectedItem: $filterConfig.selectedCategory, items: categories)
                     default: Text("Unknown")
                     }
                 }

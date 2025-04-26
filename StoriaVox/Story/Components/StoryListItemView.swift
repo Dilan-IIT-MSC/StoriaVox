@@ -18,7 +18,7 @@ struct StoryListItemView: View {
                     .frame(width: 90, height: 90)
                     .cornerRadius(8)
                 
-                AsyncImage(url: URL(string: "https://picsum.photos/230/128")) { image in
+                AsyncImage(url: URL(string: story.thumbnailUrl ?? "")) { image in
                     image.resizable()
                 } placeholder: {
                     Color.backgroundColors.randomElement() ?? .gray
@@ -28,38 +28,25 @@ struct StoryListItemView: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("The Great Adventure of Thor")
+                Text(story.title)
                     .font(.system(size: 16, weight: .semibold))
                     .lineLimit(2)
                 
-                Text("By Jane Smith")
+                Text("By \(story.author.displayTitle)")
                     .font(.system(size: 14, weight: .regular))
                     .foregroundColor(.secondary)
                 
                 HStack(spacing: 12) {
-                    Text("Fantasy")
-                        .font(.system(size: 12, weight: .medium))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 6)
-                        .background(Color.green.opacity(0.1))
-                        .foregroundColor(.green)
-                        .cornerRadius(8)
+                    ForEach(Array(story.categories.enumerated()), id: \.offset) { _, category in
+                        Text(category.name)
+                            .font(.system(size: 12, weight: .medium))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 6)
+                            .background(Color.green.opacity(0.1))
+                            .foregroundColor(.green)
+                            .cornerRadius(8)
+                    }
                     
-                    Text("Fantasy")
-                        .font(.system(size: 12, weight: .medium))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 6)
-                        .background(Color.green.opacity(0.1))
-                        .foregroundColor(.green)
-                        .cornerRadius(8)
-                    
-                    Text("Fantasy")
-                        .font(.system(size: 12, weight: .medium))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 6)
-                        .background(Color.green.opacity(0.1))
-                        .foregroundColor(.green)
-                        .cornerRadius(8)
                 }
                 .padding(.top, 4)
                 
@@ -67,20 +54,36 @@ struct StoryListItemView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "clock.fill")
                             .font(.system(size: 12))
+                            .foregroundColor(Color.blue.opacity(0.4))
                         
-                        Text("12 min")
+                        Text(story.duration.formattedTime())
                             .font(.system(size: 12))
+                            .foregroundStyle(Color.title)
+                            .fontDesign(.rounded)
                     }
-                    .foregroundColor(.secondary)
                     
                     HStack(spacing: 4) {
                         Image(systemName: "ear.fill")
                             .font(.system(size: 12))
+                            .foregroundColor(Color.accentColor.opacity(0.4))
                         
-                        Text("3.2k")
+                        Text("\(story.listenCount.abbreviated())")
                             .font(.system(size: 12))
+                            .foregroundStyle(Color.title)
+                            .fontDesign(.rounded)
                     }
-                    .foregroundColor(.secondary)
+                    
+                    
+                    HStack(spacing: 4) {
+                        Image(systemName: "heart.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color.red.opacity(0.4))
+                        
+                        Text("\(story.listenCount > 0 ? story.likeCount.abbreviated(): "-")")
+                            .font(.system(size: 12))
+                            .foregroundStyle(Color.title)
+                            .fontDesign(.rounded)
+                    }
                 }
                 .padding(.top, 4)
             }
@@ -93,5 +96,5 @@ struct StoryListItemView: View {
 }
 
 #Preview {
-    StoryListItemView(story: StoryListItem(id: 1, title: "Test story title", thumbnailUrl: "", created: Date(), duration: 09.34, listenCount: 34500, author: Author(id: 2, firstName: "Dilan", lastName: "Anuruddha"), likeCount: 2300, categories: []))
+    StoryListItemView(story: StoryListItem(id: 1, title: "Test story title", thumbnailUrl: "", duration: "09:00", listenCount: 34500, author: Author(id: 2, firstName: "Dilan", lastName: "Anuruddha"), likeCount: 2300, categories: [Category(id: 3, name: "Family", description: "", icon: 3, imageURL: nil)]))
 }
