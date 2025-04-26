@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject private var bannerState: BannerState
     @State private var selectedTabIndex = 0
     
     var body: some View {
@@ -39,6 +40,7 @@ struct MainTabView: View {
         }
         .tabViewStyle(.automatic)
         .environment(\.horizontalSizeClass, .compact)
+        .banner(isPresent: $bannerState.isShowBanner)
     }
 }
 
