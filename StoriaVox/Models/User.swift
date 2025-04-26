@@ -9,7 +9,7 @@ import Foundation
 
 struct User: Codable {
     let id: Int
-    let externalId: String
+    let externalId: String?
     let email: String
     let firstName: String
     let lastName: String?
@@ -17,7 +17,19 @@ struct User: Codable {
     let bio: String?
     let profileImage: String?
     let status: Int
-    let created: String?
+    let created: String
     let updated: String?
+}
+
+struct Author: Codable {
+    let id: Int
+    let firstName: String
+    let lastName: String?
+}
+
+extension Author {
+    var fullName: String {
+        return "\(firstName) \(lastName ?? "")"
+    }
 }
 

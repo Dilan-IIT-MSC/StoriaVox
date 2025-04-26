@@ -25,7 +25,6 @@ class UserService {
         NetworkService.shared.performRequest(
             endpoint: Endpoints.userWithId + "\(userId)",
             method: .get,
-            dataField: "user",
             completion: completion
         )
     }
@@ -34,7 +33,6 @@ class UserService {
         NetworkService.shared.performRequest(
             endpoint: Endpoints.userByEmail + email,
             method: .get,
-            dataField: "user",
             completion: completion
         )
     }
@@ -66,7 +64,6 @@ class UserService {
             method: .post,
             parameters: parameters,
             encoding: JSONEncoding.default,
-            dataField: "user",
             completion: completion
         )
     }
@@ -108,7 +105,6 @@ class UserService {
             method: .put,
             parameters: parameters,
             encoding: JSONEncoding.default,
-            dataField: "user",
             completion: completion
         )
     }
