@@ -28,3 +28,16 @@ struct StoryListResponse: Codable {
     let message: String
     let stories: [StoryListItem]
 }
+
+struct RecentStory: Codable {
+    let id: Int
+    let title: String
+    let storyUrl: String
+    let duration: String
+    let lastListenTime: String?
+    let listenedDuration: String?
+    let created: String?
+    let author: Author
+    let categories: [Category]
+    let isRecommended: Bool?
+}

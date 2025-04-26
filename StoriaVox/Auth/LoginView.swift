@@ -42,6 +42,7 @@ struct LoginView: View {
                             Text("Forgot Password?")
                                 .foregroundColor(.gray)
                                 .font(.system(size: 14))
+                                .underline()
                         }
                     }
                 }
@@ -94,10 +95,6 @@ struct LoginView: View {
         }
         .ignoresSafeArea()
         .banner(isPresent: $bannerState.isShowBanner)
-        .onAppear {
-            let user = AuthenticationManager.shared.msalClient.getNativeAuthUserAccount()
-            print("logged in user \(user?.account.username)")
-        }
     }
 }
 
