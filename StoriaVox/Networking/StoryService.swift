@@ -22,14 +22,14 @@ class StoryService {
     }
     
     func getStories(
-        userId: Int? = nil,
+        authorId: Int? = nil,
         categoryId: Int? = nil,
         order: String = "ascending",
-        completion: @escaping (Result<[Story]?, NetworkError>) -> Void
+        completion: @escaping (Result<StoryListResponse, NetworkError>) -> Void
     ) {
         var parameters: [String: Any] = ["order": order]
         
-        if let userId = userId {
+        if let userId = authorId {
             parameters["user_id"] = userId
         }
         
@@ -42,50 +42,48 @@ class StoryService {
             method: .post,
             parameters: parameters,
             encoding: JSONEncoding.default,
-            dataField: "stories",
             completion: completion
         )
     }
     
     func getStoryDetail(
         storyId: Int,
-        completion: @escaping (Result<Story?, NetworkError>) -> Void
+        completion: @escaping (Result<StoryListItem?, NetworkError>) -> Void
     ) {
         NetworkService.shared.performRequest(
             endpoint: Endpoints.storyWithId + "\(storyId)",
             method: .get,
-            dataField: "story",
             completion: completion
         )
     }
     
-    func updateStoryLike(
-        storyId: Int,
-        userId: Int,
-        action: LikeAction,
-        completion: @escaping (Result<LikeResponse?, NetworkError>) -> Void
-    ) {
-        let parameters: [String: Any] = [
-            "story_id": storyId,
-            "user_id": userId,
-            "action": action.rawValue
-        ]
-        
-        NetworkService.shared.performRequest(
-            endpoint: Endpoints.storyLike,
-            method: .post,
-            parameters: parameters,
-            encoding: JSONEncoding.default,
-            completion: completion
-        )
-    }
+//    func updateStoryLike(
+//        storyId: Int,
+//        userId: Int,
+//        action: LikeAction,
+//        completion: @escaping (Result<LikeResponse?, NetworkError>) -> Void
+//    ) {
+//        let parameters: [String: Any] = [
+//            "story_id": storyId,
+//            "user_id": userId,
+//            "action": action.rawValue
+//        ]
+//        
+//        NetworkService.shared.performRequest(
+//            endpoint: Endpoints.storyLike,
+//            method: .post,
+//            parameters: parameters,
+//            encoding: JSONEncoding.default,
+//            completion: completion
+//        )
+//    }
     
     func uploadStory(
         userId: Int,
         title: String,
         categories: [Int],
         audioData: Data,
-        completion: @escaping (Result<Story?, NetworkError>) -> Void
+        completion: @escaping (Result<StoryListItem?, NetworkError>) -> Void
     ) {
         if categories.count > 3 {
             completion(.failure(.serverMessage("Maximum 3 categories allowed")))
