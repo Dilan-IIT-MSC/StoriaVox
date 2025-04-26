@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct RecentlyListenedRowView: View {
+    let story: RecentStory
+    
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             AsyncImage(url: URL(string: "https://picsum.photos/64/64")) { image in
@@ -21,25 +23,27 @@ struct RecentlyListenedRowView: View {
             .shadow(color: .gray.opacity(0.5), radius: 1)
             
             VStack(alignment: .leading, spacing: 0) {
-                Text("The Alchemist")
+                Text(story.title)
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(.title)
                 
-                Text("by Paulo Coelho")
+                Text("by \(story.author.displayTitle)")
                     .font(.system(size: 14, weight: .light))
                     .foregroundStyle(.title)
                 
                 Spacer()
                 
-                HStack {
-                    Image(systemName: "clock")
-                        .resizable()
-                        .foregroundStyle(.gray)
-                        .frame(width: 14, height: 14)
-                    
-                    Text("23 mins remaining")
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundStyle(.gray)
+                if !(story.isRecommended ?? false) {
+                    HStack(spacing: 2) {
+                        Image(systemName: "clock")
+                            .resizable()
+                            .foregroundStyle(.gray)
+                            .frame(width: 14, height: 14)
+                        
+                        Text("\(story.duration.formattedTime())")
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundStyle(.gray)
+                    }
                 }
             }
             
@@ -60,8 +64,4 @@ struct RecentlyListenedRowView: View {
         }
         .frame(height: 64)
     }
-}
-
-#Preview {
-    RecentlyListenedRowView()
 }

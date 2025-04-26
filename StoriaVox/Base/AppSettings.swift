@@ -15,7 +15,7 @@ class AppSettings: ObservableObject {
     @Published var homePaths: [Route] = []
     @Published var mainRoute: MainRoute = .unspecified
     @Published var lastRecordingURL: URL?
-    @Published var storyCategories: [Category] = []
+    @Published var currentUser: User?
     
     init() {
         NotificationCenter.default

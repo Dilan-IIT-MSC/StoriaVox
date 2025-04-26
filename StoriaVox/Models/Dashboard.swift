@@ -16,5 +16,5 @@ struct DashboardResponse: Codable {
 struct Dashboard: Codable {
     let trendingStories: [StoryListItem]
     let recentlyListened: [RecentStory]
-    let trendingCategories: [Category]
+    let trendingCategories: [CategoryData]
 }
