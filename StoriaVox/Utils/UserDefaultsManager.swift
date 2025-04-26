@@ -16,11 +16,17 @@ final class UserDefaultsManager {
     private enum Keys: String {
         case isOnboardTourDone
         case userPreferences
+        case loggedInUserId
     }
     
     var isOnboardTourDone: Bool {
         get { defaults.bool(forKey: Keys.isOnboardTourDone.rawValue) }
         set { defaults.set(newValue, forKey: Keys.isOnboardTourDone.rawValue) }
+    }
+    
+    var loggedInUserId: String? {
+        get { defaults.string(forKey: Keys.loggedInUserId.rawValue) }
+        set { defaults.set(newValue, forKey: Keys.loggedInUserId.rawValue) }
     }
 
     struct UserPreferences: Codable {

@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct StoryTileView: View {
+    let story: StoryListItem
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            AsyncImage(url: URL(string: "https://picsum.photos/230/128")) { image in
+            AsyncImage(url: URL(string: story.thumbnailUrl ?? "")) { image in
                 image.resizable()
             } placeholder: {
                 Color.backgroundColors.randomElement() ?? .gray
@@ -22,11 +24,13 @@ struct StoryTileView: View {
             
             HStack(alignment: .center, spacing: 4) {
                 VStack(alignment: .leading) {
-                    Text("Cat's Cradle Story")
-                        .font(.system(size: 17, weight: .medium))
+                    Text(story.title)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(Color.title)
                     
-                    Text("by Anuruddha Rathnayaka")
-                        .font(.system(size: 13, weight: .light))
+                    Text("by \(story.author.displayTitle)")
+                        .font(.system(size: 12, weight: .light))
+                        .foregroundStyle(Color.value)
                 }
                 
                 Spacer()
@@ -34,24 +38,22 @@ struct StoryTileView: View {
                 HStack(alignment: .center, spacing: 4) {
                     Image(systemName: "ear.badge.waveform")
                         .resizable()
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.accent)
                         .frame(width: 16, height: 18)
                     
-                    Text("123k")
+                    Text("\(story.listenCount.abbreviated())")
                         .font(.system(size: 14, weight: .light))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.value)
                 }
             }
             .padding(8)
             .padding(.bottom, 8)
+            
+            Spacer()
         }
+        .frame(width: 230, height: 200)
         .background(Color.backgroundColors.randomElement())
         .clipShape(.rect(cornerRadius: 16))
-        .frame(width: 230)
         .shadow(color: .border, radius: 1)
     }
-}
-
-#Preview {
-    StoryTileView()
 }

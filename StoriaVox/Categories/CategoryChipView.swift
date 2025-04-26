@@ -52,5 +52,5 @@ struct CategoryChipView: View {
 #Preview {
     CategoryChipView(
         selectedCategories: .constant([]),
-        category: .init(id: 222, name: "Love", description: "love description", icon: 3))
+        category: .init(id: 222, name: "Love", description: "love description", icon: 3, imageURL: nil))
 }

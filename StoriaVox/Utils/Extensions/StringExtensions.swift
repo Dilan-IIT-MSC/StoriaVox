@@ -13,4 +13,8 @@ extension String {
             let emailPredicate = NSPredicate(format: "SELF MATCHES[c] %@", emailRegex)
         return emailPredicate.evaluate(with: self)
     }
+    
+    func formattedTime() -> String {
+        return "\(self) min"
+    }
 }

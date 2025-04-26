@@ -148,27 +148,27 @@ struct AddMetaDataView: View {
                                                 selectedCategories: $viewModel.selectedCategories,
                                                 category: appSettings.storyCategories[index]
                                             )
-                                                .padding(.all, 5)
-                                                .alignmentGuide(.leading) { dimension in
-                                                    if (abs(width - dimension.width) > geo.size.width) {
-                                                        width = 0
-                                                        height -= dimension.height
-                                                    }
-                                                    let result = width
-                                                    if index == appSettings.storyCategories.count - 1 {
-                                                        width = 0
-                                                    } else {
-                                                        width -= dimension.width
-                                                    }
-                                                    return result
+                                            .padding(.all, 5)
+                                            .alignmentGuide(.leading) { dimension in
+                                                if (abs(width - dimension.width) > geo.size.width) {
+                                                    width = 0
+                                                    height -= dimension.height
                                                 }
-                                                .alignmentGuide(.top) { dimension in
-                                                    let result = height
-                                                    if index == appSettings.storyCategories.count - 1 {
-                                                        height = 0
-                                                    }
-                                                    return result
+                                                let result = width
+                                                if index == appSettings.storyCategories.count - 1 {
+                                                    width = 0
+                                                } else {
+                                                    width -= dimension.width
                                                 }
+                                                return result
+                                            }
+                                            .alignmentGuide(.top) { dimension in
+                                                let result = height
+                                                if index == appSettings.storyCategories.count - 1 {
+                                                    height = 0
+                                                }
+                                                return result
+                                            }
                                         }
                                     })
                                     .padding(.top, 12)
@@ -244,8 +244,8 @@ struct AddMetaDataView: View {
             return
         }
         viewModel.alertMessage = asDraft
-            ? "Story saved as draft successfully!"
-            : "Story published successfully!"
+        ? "Story saved as draft successfully!"
+        : "Story published successfully!"
         viewModel.showAlert = true
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)

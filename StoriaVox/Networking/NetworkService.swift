@@ -55,60 +55,6 @@ class NetworkService {
         case none
     }
     
-    struct GeneralResponse<T: Decodable>: Decodable {
-        let status: Bool
-        let message: String
-        let data: T?
-        
-        private struct DynamicCodingKeys: CodingKey {
-            var stringValue: String
-            var intValue: Int?
-            
-            init?(stringValue: String) {
-                self.stringValue = stringValue
-            }
-            
-            init?(intValue: Int) {
-                return nil
-            }
-        }
-        
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            status = try container.decode(Bool.self, forKey: .status)
-            message = try container.decode(String.self, forKey: .message)
-            
-            var decodedData: T? = nil
-            
-            if status {
-                let dynamicContainer = try decoder.container(keyedBy: DynamicCodingKeys.self)
-                
-                let typeName = String(describing: T.self).lowercased()
-                let possibleKeys = [
-                    typeName,
-                    "\(typeName)s",
-                    "data",
-                    "result",
-                    "items"
-                ]
-                
-                for key in possibleKeys {
-                    if let dataKey = DynamicCodingKeys(stringValue: key),
-                       dynamicContainer.contains(dataKey) {
-                        decodedData = try dynamicContainer.decode(T.self, forKey: dataKey)
-                        break
-                    }
-                }
-            }
-            
-            data = decodedData
-        }
-        
-        enum CodingKeys: String, CodingKey {
-            case status, message
-        }
-    }
-    
     @discardableResult
     func performRequest<T: Decodable>(
         endpoint: String,
@@ -117,8 +63,8 @@ class NetworkService {
         encoding: ParameterEncoding? = nil,
         headers: HTTPHeaders? = nil,
         authType: AuthType = .function,
-        dataField: String? = nil,
-        completion: @escaping (Result<T?, NetworkError>) -> Void
+        keyPath: String? = nil,
+        completion: @escaping (Result<T, NetworkError>) -> Void
     ) -> DataRequest {
         let url = buildURL(endpoint: endpoint)
         let finalHeaders = addAuthHeaders(to: headers, authType: authType)
@@ -134,37 +80,50 @@ class NetworkService {
         ).validate()
         
         request.responseData { response in
+            print(response.response)
+            print(response.result)
             switch response.result {
             case .success(let data):
                 do {
-                    let decoder = JSONDecoder()
-                    let generalResponse = try decoder.decode(GeneralResponse<T>.self, from: data)
-                    
-                    if generalResponse.status {
-                        completion(.success(generalResponse.data))
-                    } else {
-                        completion(.failure(.serverMessage(generalResponse.message)))
-                    }
-                } catch {
-                    do {
-                        if let dataField = dataField {
-                            let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-                            if let statusValue = json?["status"] as? Bool, statusValue,
-                               let nestedData = json?[dataField] {
-                                // Need to create a new decoder here
-                                let nestedDecoder = JSONDecoder()
-                                let nestedDataJson = try JSONSerialization.data(withJSONObject: nestedData)
-                                let decoded = try nestedDecoder.decode(T.self, from: nestedDataJson)
-                                completion(.success(decoded))
-                                return
+                    if let keyPath = keyPath {
+                        if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                           let nestedData = json[keyPath] {
+                            print(json)
+                            let nestedDataJson = try JSONSerialization.data(withJSONObject: nestedData)
+                            let decoded = try JSONDecoder().decode(T.self, from: nestedDataJson)
+                            completion(.success(decoded))
+                        } else {
+                            // Try to check if there's an error message before failing
+                            if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                               let status = json["status"] as? Bool,
+                               !status,
+                               let message = json["message"] as? String {
+                                completion(.failure(.serverMessage(message)))
+                            } else {
+                                completion(.failure(.decodingError(NSError(domain: "NetworkService", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not find data at keyPath: \(keyPath)"]))))
                             }
                         }
-                        let fallbackDecoder = JSONDecoder()
-                        let decoded = try fallbackDecoder.decode(T.self, from: data)
-                        completion(.success(decoded))
-                    } catch {
-                        completion(.failure(.decodingError(error)))
+                    } else {
+                        let decoder = JSONDecoder()
+                        decoder.dateDecodingStrategy = .iso8601
+                        
+                        do {
+                            let decoded = try decoder.decode(T.self, from: data)
+                            completion(.success(decoded))
+                        } catch {
+                            if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                               let status = json["status"] as? Bool,
+                               !status,
+                               let message = json["message"] as? String {
+                                print(json)
+                                completion(.failure(.serverMessage(message)))
+                            } else {
+                                completion(.failure(.decodingError(error)))
+                            }
+                        }
                     }
+                } catch {
+                    completion(.failure(.decodingError(error)))
                 }
             case .failure(let error):
                 completion(.failure(.networkError(error)))
@@ -194,14 +153,14 @@ class NetworkService {
             switch response.result {
             case .success(let data):
                 do {
-                    let decoder = JSONDecoder()
-                    let generalResponse = try decoder.decode(GeneralResponse<T>.self, from: data)
-                    
-                    if generalResponse.status {
-                        completion(.success(generalResponse.data))
-                    } else {
-                        completion(.failure(.serverMessage(generalResponse.message)))
-                    }
+//                    let decoder = JSONDecoder()
+//                    let generalResponse = try decoder.decode(GeneralResponse<T>.self, from: data)
+//                    
+//                    if generalResponse.status {
+//                        completion(.success(generalResponse.data))
+//                    } else {
+//                        completion(.failure(.serverMessage(generalResponse.message)))
+//                    }
                 } catch {
                     do {
                         if let dataField = dataField {

@@ -8,69 +8,66 @@
 import SwiftUI
 
 struct CategoryTileView: View {
-    var category: Category
+    var categoryData: CategoryData
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 0) {
-                Spacer()
-                
-                categoryImage()
-                .offset(x: 72)
-                
-                categoryImage()
-                
-                categoryImage()
-                .offset(x: -72)
-                
-                Spacer()
+                categoryImage(url: categoryData.category.imageURL ?? "")
             }
-            .frame(width: 176, height: 96)
+            .frame(height: 150)
             
             HStack(alignment: .center) {
-                CategoryIconView(icon: category.getIcon())
+                CategoryIconView(icon: categoryData.category.getIcon())
 
                 VStack(alignment: .leading) {
-                    Text(category.name)
+                    Text(categoryData.category.name)
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.title)
+                        .fontDesign(.rounded)
                     
-                    Text("\(Int.random(in: 0...1000)) Stories")
-                        .font(.system(size: 13, weight: .light))
-                        .foregroundStyle(.secondValue)
+                    if categoryData.storyCount > 1 {
+                        Text("\(categoryData.storyCount) Stories")
+                            .font(.system(size: 13, weight: .light))
+                            .foregroundStyle(.secondValue)
+                    } else {
+                        Text("No Stories yet")
+                            .font(.system(size: 13, weight: .light))
+                            .foregroundStyle(.secondValue)
+                    }
                 }
-
                 
                 Spacer()
             }
             .padding(.top, 8)
+            .padding(.horizontal, 8)
         }
-        .padding(16)
-        .frame(width: 176)
+        .padding(.bottom, 16)
+        .frame(height: 200)
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color.backgroundColors.randomElement() ?? .whiteBackground)
-                .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 4)
+                .shadow(color: .gray.opacity(0.3), radius: 2, x: 0, y: 3)
         )
         .contentShape(Rectangle())
     }
     
     @ViewBuilder
-    func categoryImage() -> some View {
-        AsyncImage(url: URL(string: "https://picsum.photos/230/128")) { image in
+    func categoryImage(url: String) -> some View {
+        AsyncImage(url: URL(string: url)) { image in
             image.resizable()
         } placeholder: {
             Color.backgroundColors.randomElement() ?? .gray
         }
-        .frame(width: 96, height: 96)
+        .frame(height: 150)
         .background(Color.backgroundColors.randomElement())
         .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(.gray, lineWidth: 2)
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(.gray, lineWidth: 1)
         )
-        .clipShape(.rect(cornerRadius: 16))
+        .clipShape(.rect(cornerRadius: 8))
     }
 }
 
 #Preview {
-    CategoryTileView(category: .init(id: 22, name: "Family", description: "family description", icon: 0))
+    CategoryTileView(categoryData: CategoryData(category: Category(id: 1, name: "", description: "", icon: 3, imageURL: ""), storyCount: 2334))
 }

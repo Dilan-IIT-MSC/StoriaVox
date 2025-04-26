@@ -39,6 +39,10 @@ enum AuthRoute : Equatable, Hashable {
     case verifyCode
     case resetPassword
     case forgotPassword
+    case completeSignUp
 }
 
+enum ProfileRoute : Equatable, Hashable {
+    case editProfile
+}
 

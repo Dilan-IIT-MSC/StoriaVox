@@ -10,7 +10,7 @@ import SwiftUI
 import MSAL
 
 class AuthenticationManager: ObservableObject {
-    @Published var path: [Route] = []
+    //@Published var path: [Route] = []
     @Published var isAuthenticated = false
     @Published var user: MSALNativeAuthUserAccountResult?
     @Published var errorMessage: String?
@@ -26,50 +26,18 @@ class AuthenticationManager: ObservableObject {
                 tenantSubdomain: "storiavoxapp",
                 challengeTypes: [.OOB, .password]
             )
+            MSALGlobalConfig.loggerConfig.setLogCallback { (level, message, containsPII) in
+                if !containsPII {
+                    print("[MSAL] \(message ?? "")")
+                }
+            }
+            MSALGlobalConfig.loggerConfig.logLevel = .verbose
+            if let user = msalClient.getNativeAuthUserAccount() {
+                UserDefaultsManager.shared.loggedInUserId = user.account.username
+                isAuthenticated = true
+            }
         } catch {
             fatalError("Failed to initialize MSAL client: \(error)")
         }
-    }
-    
-    func signIn(username: String, password: String) {
-        let parameters = MSALNativeAuthSignInParameters(username: username)
-        parameters.password = password
-        msalClient.signIn(parameters: parameters, delegate: self)
-    }
-    
-    func signUp(username: String, password: String) {
-        let parameters = MSALNativeAuthSignUpParameters(username: username)
-        parameters.password = password
-        msalClient.signUp(parameters: parameters, delegate: self)
-    }
-    
-    func signOut() {
-        
-    }
-}
-
-// MARK: SignIn delegate
-extension AuthenticationManager: SignInStartDelegate {
-    func onSignInStartError(error: MSAL.SignInStartError) {
-        BannerHandler.shared.showErrorBanner(title: "Sign In Error.", message: error.errorDescription ?? "", isAutoHide: true)
-    }
-    
-    func onSignInCompleted(result: MSALNativeAuthUserAccountResult) {
-        BannerHandler.shared.showSuccessBanner(title: "Success.", message: "signed in successfully.", isAutoHide: true)
-    }
-}
-
-// MARK: Signup delegate
-extension AuthenticationManager: SignUpStartDelegate {
-    func onSignUpStartError(error: MSAL.SignUpStartError) {
-        BannerHandler.shared.showErrorBanner(title: "Sign Up Error.", message: error.errorDescription ?? "", isAutoHide: true)
-    }
-    
-    func onSignUpCompleted(result: MSALNativeAuthUserAccountResult) {
-        
-    }
-    
-    func onSignInCodeRequired(newState: SignInCodeRequiredState, sentTo: String, channelTargetType: MSALNativeAuthChannelType, codeLength: Int) {
-        print("Verification code sent to \(sentTo) - length: \(codeLength)")
     }
 }

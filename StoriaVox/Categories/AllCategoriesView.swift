@@ -9,6 +9,9 @@ import SwiftUI
 
 struct AllCategoriesView: View {
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var loadingState: LoadingState
+    @EnvironmentObject private var bannerState: BannerState
+    @StateObject var viewModel: CategoryViewModel = .init()
     private let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
@@ -21,20 +24,30 @@ struct AllCategoriesView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(0..<appSettings.storyCategories.count, id: \.self) { index in
+                        ForEach(0..<viewModel.categories.count, id: \.self) { index in
                             Button {
                                 appSettings.homePaths.append(.storyListing)
                             } label: {
-                                CategoryTileView(category: appSettings.storyCategories[index])
+                                CategoryTileView(categoryData: viewModel.categories[index])
                                     .contentShape(Rectangle())
                             }
+                            .id(viewModel.categories[index].category.id)
                         }
                     }
                 }
+                .refreshable {
+                    viewModel.fetchCategories()
+                }
+                
+                Spacer(minLength: 32)
             }
             .padding(.horizontal, 16)
         }
+        .banner(isPresent: $bannerState.isShowBanner)
         .navigationTitle("All Categories")
+        .onAppear {
+            viewModel.fetchCategories()
+        }
     }
 }
 
