@@ -16,7 +16,7 @@ struct Category: Codable, Identifiable, Equatable {
     let imageURL: String?
     
     public func getIcon() -> Image {
-        switch icon ?? 0 {
+        switch id {
         case 1:
             return Image(.family)
         case 2:
