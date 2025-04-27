@@ -1,5 +1,5 @@
 {
-  "originHash" : "b3bbbd8989156cdd39a2e03928afa07261aab36b0b187585f625ef5c920f67ef",
+  "originHash" : "59ae7851cce2b53c230e67392c061976377233ab30c3120848aa6f681ab6e5b2",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "5b3fd238ef8ee95c9842ca4ea83ca58ee151e630",
         "version" : "5.6.5"
+      }
+    },
+    {
+      "identity" : "lame",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pro100andrey/lame",
+      "state" : {
+        "revision" : "24e0021c7fc4673f1301c9ce2d1b042c051b766a",
+        "version" : "1.2.6"
       }
     },
     {

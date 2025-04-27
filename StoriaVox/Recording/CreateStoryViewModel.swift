@@ -55,18 +55,13 @@ class CreateStoryViewModel: ObservableObject {
     }
     
     func setupAudioEngine() -> Bool {
-        // Clean up any existing engine first
         cleanupEngine()
-        
-        // Set up audio session
         guard setupAudioSession() else { return false }
         
         do {
-            // Create a new engine
             engine = AudioEngine()
             guard let engine = engine else { return false }
             
-            // Get the input (microphone)
             guard let input = engine.input else {
                 errorMessage = "Could not access microphone input"
                 alertMessage = "Microphone not available. Please check your device settings."
@@ -74,16 +69,9 @@ class CreateStoryViewModel: ObservableObject {
                 return false
             }
             
-            // Make input available for FFT visualization
             audioNode = input
-            
-            // Create a mixer
             mixer = Mixer(input)
-            
-            // Set the engine's output to the mixer
             engine.output = mixer
-            
-            // Start the engine
             try engine.start()
             isEngineRunning = true
             
@@ -98,65 +86,43 @@ class CreateStoryViewModel: ObservableObject {
     
     // MARK: - Engine Control
     func startEngine() {
-        // Only attempt to start if not already running
         if !isEngineRunning {
             _ = setupAudioEngine()
         }
     }
     
     func stopEngine() {
-        // Don't call cleanupEngine() here as it might delete our recording
-        // Instead, manually stop the engine without releasing resources
-        
-        // Stop timer
         stopTimer()
-        
-        // Stop recording if in progress
         if isRecording {
             _ = stopRecording()
         }
-        
-        // Stop playback if in progress
         if isPlaying {
             stopPlayback()
         }
-        
-        // Stop the engine
         engine?.stop()
-        
-        // Update state
         isEngineRunning = false
     }
     
     private func cleanupEngine(preserveRecording: Bool = true) {
-        // Stop timer
         stopTimer()
         
-        // If recording is in progress, stop it first
         if isRecording || isPaused {
             _ = stopRecording()
         }
         
-        // If playback is in progress, stop it
         if isPlaying {
             stopPlayback()
         }
         
-        // If we need to preserve the recording, don't release the recorder yet
         if !preserveRecording {
             recorder = nil
         }
-        
-        // Stop engine
+
         engine?.stop()
         engine = nil
-        
-        // Reset player, mixer and node references
         player = nil
         mixer = nil
         audioNode = nil
-        
-        // Update state
         isEngineRunning = false
         isRecording = false
         isPaused = false
@@ -179,24 +145,19 @@ class CreateStoryViewModel: ObservableObject {
     }
     
     func startRecording() {
-        // If we're already recording, do nothing
         guard !isRecording else { return }
-        
-        // Ensure audio engine is running
+
         if !isEngineRunning {
             guard setupAudioEngine() else { return }
         }
-        
-        // Make sure we have a mixer
+
         guard let mixer = self.mixer else {
             alertMessage = "Audio system not ready. Please try again."
             showAlert = true
             return
         }
         
-        // If we're not resuming from pause, create a new recording
         if !isPaused {
-            // Create a directory for our recordings if needed
             let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             let recordingsDirectory = documentsPath.appendingPathComponent("Recordings", isDirectory: true)
             
@@ -207,21 +168,16 @@ class CreateStoryViewModel: ObservableObject {
             } catch {
                 print("Could not create recordings directory: \(error.localizedDescription)")
             }
-            
-            // Make sure the old recorder is stopped but don't release it
-            // to ensure we don't lose the previous recording
+
             if isRecording {
                 recorder?.stop()
             }
             
-            // Reset timers and state
             recordingTime = 0
             duration = 0
             maxTimeReached = false
             
-            // Create a new recorder
             do {
-                // Set shouldCleanupRecordings to false to prevent automatic cleanup
                 recorder = try NodeRecorder(node: mixer,
                                           fileDirectoryURL: recordingsDirectory,
                                           shouldCleanupRecordings: false)
@@ -231,14 +187,11 @@ class CreateStoryViewModel: ObservableObject {
                 return
             }
         }
-        
-        // Start recording
+
         do {
             try recorder?.record()
             isRecording = true
             isPaused = false
-            
-            // Start timer
             startTimer()
         } catch {
             alertMessage = "Could not start recording: \(error.localizedDescription)"
@@ -249,42 +202,28 @@ class CreateStoryViewModel: ObservableObject {
     
     func pauseRecording() {
         guard isRecording, !isPaused, let recorder = recorder else { return }
-        
-        // Stop the recording but keep the recorder
         recorder.stop()
-        
-        // Get the file URL and save it (important - do this before releasing the recorder)
         if let audioFile = recorder.audioFile {
             recordingURL = audioFile.url
             print("Recording paused, file saved at: \(audioFile.url.path)")
         }
         
-        // Update state
         isPaused = true
         isRecording = false
-        
-        // Stop the timer
         stopTimer()
-        
-        // Update duration
         duration = max(duration, recordingTime)
     }
     
     func stopRecording() -> URL? {
         guard let recorder = recorder else { return nil }
-        
-        // Stop recording
         recorder.stop()
-        
-        // Get the file URL and save it before releasing the recorder
+
         if let audioFile = recorder.audioFile {
             recordingURL = audioFile.url
             print("Recording stopped, file saved at: \(audioFile.url.path)")
-            
-            // Explicitly save the file to a permanent location
             let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             let timestamp = Int(Date().timeIntervalSince1970)
-            let permanentURL = documentsPath.appendingPathComponent("recording_\(timestamp).aac")
+            let permanentURL = documentsPath.appendingPathComponent("recording_\(timestamp).m4a")
             
             do {
                 if FileManager.default.fileExists(atPath: permanentURL.path) {
@@ -300,65 +239,38 @@ class CreateStoryViewModel: ObservableObject {
             print("No audio file available after stopping recording")
         }
         
-        // Update state
         isRecording = false
         isPaused = false
-        
-        // Stop timer
         stopTimer()
-        
-        // Update duration
         duration = max(duration, recordingTime)
-        
-        // Don't release the recorder yet to prevent file cleanup
-        // We'll manually release it when we're done with the file
-        
-        // Return the recording URL
         return recordingURL
     }
     
-    // MARK: - Audio Playback Methods
     func setupPlayback(for url: URL? = nil) {
-        // Use the provided URL or fall back to recordingURL
         guard let audioURL = url ?? recordingURL else {
             alertMessage = "No audio recording available"
             showAlert = true
             return
         }
         
-        // Ensure engine is running
         if !isEngineRunning {
             guard setupAudioEngine() else { return }
         }
-        
-        // Stop any existing playback
         if isPlaying {
             stopPlayback()
         }
         
         do {
-            // Create a new player and mixer for playback
             player = AudioPlayer()
             mixer = Mixer()
-            
-            // Load the audio file into the player
             try player?.load(url: audioURL)
-            
-            // Make sure we have valid objects
             guard let player = player, let mixer = mixer, let engine = engine else {
                 throw NSError(domain: "AudioPlayerError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to create audio components"])
             }
             
-            // Connect player to mixer
             mixer.addInput(player)
-            
-            // Connect mixer to engine output
             engine.output = mixer
-            
-            // Make mixer available for FFT visualization
             audioNode = mixer
-            
-            // Update duration if possible
             if let audioFile = try? AVAudioFile(forReading: audioURL) {
                 duration = audioFile.duration
             }
@@ -377,8 +289,6 @@ class CreateStoryViewModel: ObservableObject {
             setupPlayback()
             return
         }
-        
-        // Make sure engine is running
         if !engine.avEngine.isRunning {
             do {
                 try engine.start()
@@ -389,14 +299,10 @@ class CreateStoryViewModel: ObservableObject {
                 return
             }
         }
-        
-        // Start playback
+    
         player.play()
         isPlaying = true
-        
-        // Start timer to track playback time
         startPlaybackTimer()
-        
         print("Started audio playback")
     }
     
@@ -405,10 +311,7 @@ class CreateStoryViewModel: ObservableObject {
         
         player.pause()
         isPlaying = false
-        
-        // Stop timer
         stopTimer()
-        
         print("Paused audio playback at: \(playbackTime)")
     }
     
@@ -418,25 +321,18 @@ class CreateStoryViewModel: ObservableObject {
         player.stop()
         isPlaying = false
         playbackTime = 0
-        
-        // Stop timer
         stopTimer()
-        
         print("Stopped audio playback")
     }
     
     private func startPlaybackTimer() {
-        // Stop any existing timer first
         stopTimer()
         
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self, self.isPlaying else { return }
-            
-            // Update playback time
+
             if let player = self.player {
                 self.playbackTime = player.currentTime
-                
-                // Check if playback has ended
                 if self.playbackTime >= self.duration {
                     self.stopPlayback()
                 }
@@ -446,7 +342,6 @@ class CreateStoryViewModel: ObservableObject {
     
     // MARK: - Timer Functions
     private func startTimer() {
-        // Stop any existing timer first
         stopTimer()
         
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
@@ -455,8 +350,6 @@ class CreateStoryViewModel: ObservableObject {
             if self.isRecording {
                 self.recordingTime += 0.1
                 self.duration = max(self.duration, self.recordingTime)
-                
-                // Check if max recording time reached
                 if self.recordingTime >= self.MAX_RECORDING_TIME && !self.maxTimeReached {
                     self.maxTimeReached = true
                     _ = self.stopRecording()
@@ -492,8 +385,7 @@ class CreateStoryViewModel: ObservableObject {
         
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let destinationURL = documentsPath.appendingPathComponent("\(filename).aac")
-        
-        // Copy the file
+
         do {
             if FileManager.default.fileExists(atPath: destinationURL.path) {
                 try FileManager.default.removeItem(at: destinationURL)
@@ -508,24 +400,17 @@ class CreateStoryViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Cleanup
     func cleanup() {
-        // Stop playback if in progress
         if isPlaying {
             stopPlayback()
         }
         
-        // Call the clean with preserveRecording=false to fully release all resources
         cleanupEngine(preserveRecording: false)
-        
-        // Reset state
         recordingTime = 0
         playbackTime = 0
         duration = 0
         maxTimeReached = false
         player = nil
-        
-        // We're keeping recordingURL as it might be needed
     }
     
     deinit {

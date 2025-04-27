@@ -16,7 +16,9 @@ final class UserDefaultsManager {
     private enum Keys: String {
         case isOnboardTourDone
         case userPreferences
-        case loggedInUserId
+        case loggedInUserEmail
+        case loggedInUser
+        case savedCategories
     }
     
     var isOnboardTourDone: Bool {
@@ -24,9 +26,9 @@ final class UserDefaultsManager {
         set { defaults.set(newValue, forKey: Keys.isOnboardTourDone.rawValue) }
     }
     
-    var loggedInUserId: String? {
-        get { defaults.string(forKey: Keys.loggedInUserId.rawValue) }
-        set { defaults.set(newValue, forKey: Keys.loggedInUserId.rawValue) }
+    var loggedInUserEmail: String? {
+        get { defaults.string(forKey: Keys.loggedInUserEmail.rawValue) }
+        set { defaults.set(newValue, forKey: Keys.loggedInUserEmail.rawValue) }
     }
 
     struct UserPreferences: Codable {
@@ -50,8 +52,40 @@ final class UserDefaultsManager {
         }
     }
     
+    var savedCategories: [Category]? {
+        get {
+            guard let data = defaults.data(forKey: Keys.savedCategories.rawValue) else { return nil }
+            return try? JSONDecoder().decode([Category].self, from: data)
+        }
+        set {
+            if let newValue = newValue {
+                if let encoded = try? JSONEncoder().encode(newValue) {
+                    defaults.set(encoded, forKey: Keys.savedCategories.rawValue)
+                }
+            } else {
+                defaults.removeObject(forKey: Keys.savedCategories.rawValue)
+            }
+        }
+    }
+    
+    var loggedInUser: User? {
+        get {
+            guard let data = defaults.data(forKey: Keys.loggedInUser.rawValue) else { return nil }
+            return try? JSONDecoder().decode(User.self, from: data)
+        }
+        set {
+            if let newValue = newValue {
+                if let encoded = try? JSONEncoder().encode(newValue) {
+                    defaults.set(encoded, forKey: Keys.loggedInUser.rawValue)
+                }
+            } else {
+                defaults.removeObject(forKey: Keys.loggedInUser.rawValue)
+            }
+        }
+    }
+    
     func removeAll() {
-        for key in [Keys.isOnboardTourDone, Keys.userPreferences] {
+        for key in [Keys.isOnboardTourDone, Keys.userPreferences, Keys.loggedInUserEmail, Keys.savedCategories] {
             defaults.removeObject(forKey: key.rawValue)
         }
     }

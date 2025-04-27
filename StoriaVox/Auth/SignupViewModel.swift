@@ -22,6 +22,7 @@ class SignupViewModel: ObservableObject {
     @Published var verificationCodeLength: Int = 0
     @Published var verificationCodeError: String? = nil
     @Published private var newState: SignUpCodeRequiredState? = nil
+    @Published var selectedCategories: Set<Int> = []
     
     internal func isFormValid() -> Bool {
         var isValid = true
@@ -30,7 +31,6 @@ class SignupViewModel: ObservableObject {
             emailError = "Email is required"
             isValid = false
         } else if !email.isValidEmail() {
-            print("not valid")
             emailError = "Enter valid email"
             isValid = false
         } else {
@@ -84,6 +84,17 @@ class SignupViewModel: ObservableObject {
     
     internal func showSuccess(title:String, message: String) {
         BannerHandler.shared.showSuccessBanner(title: title, message: message, isAutoHide: true)
+    }
+    
+    internal func fetchCategories() {
+        CategoryService.shared.getCategories { response in
+            switch response {
+            case .success(let categoriesResponse):
+                UserDefaultsManager.shared.savedCategories = categoriesResponse.categories.map({ $0.category})
+            case .failure(let error):
+                BannerHandler.shared.showErrorBanner(title: "Error", message: error.localizedDescription, isAutoHide: true)
+            }
+        }
     }
 }
 
@@ -166,8 +177,6 @@ extension SignupViewModel: SignInAfterSignUpDelegate {
     }
     
     func onSignInCompleted(result: MSALNativeAuthUserAccountResult) {
-        print("Sign in completed after signup")
-        print(result.account)
         DispatchQueue.main.async {
             self.path = [.completeSignUp]
         }

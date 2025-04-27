@@ -32,7 +32,6 @@ struct ForgotPasswordView: View {
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 50)
                     
-                    // Email field
                     TextField("", text: $emailAddress, prompt: Text("Email")
                         .foregroundColor(.gray))
                     .textFieldStyle(.plain)
@@ -45,9 +44,7 @@ struct ForgotPasswordView: View {
                             .stroke(Color.accentColor, lineWidth: 0.5)
                     )
                     
-                    // Send reset link button
                     Button {
-                        // Send reset link action
                         isSent = true
                     } label: {
                         HStack {
@@ -66,7 +63,6 @@ struct ForgotPasswordView: View {
                     }
                     .padding(.top, 24)
                 } else {
-                    // Success message
                     VStack(spacing: 16) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 60))
@@ -90,7 +86,6 @@ struct ForgotPasswordView: View {
                     }
                     .padding(.bottom, 40)
                     
-                    // Return to login button
                     Button {
                         dismiss()
                     } label: {

@@ -46,7 +46,7 @@ struct DiscoverView: View {
             }
             .ignoresSafeArea(edges: .top)
             .onAppear {
-                viewModel.getDashboardData()
+                viewModel.fetchUser()
             }
         }
     }

@@ -41,3 +41,8 @@ struct RecentStory: Codable {
     let categories: [Category]
     let isRecommended: Bool?
 }
+
+struct StoryUploadResponse: Codable {
+    let status: Bool
+    let message: String
+}

@@ -38,7 +38,7 @@ class UserService {
         )
     }
     
-    func getUserByEmail(email: String, completion: @escaping (Result<User?, NetworkError>) -> Void) {
+    func getUserByEmail(email: String, completion: @escaping (Result<UserResponse?, NetworkError>) -> Void) {
         NetworkService.shared.performRequest(
             endpoint: Endpoints.userByEmail + email,
             method: .get,
@@ -149,19 +149,19 @@ class UserService {
                 "categories": categories
             ]
             
-//            NetworkService.shared.performRequest(
-//                endpoint: Endpoints.userCategories,
-//                method: .post,
-//                parameters: parameters,
-//                encoding: JSONEncoding.default,
-//                completion: { (result: Result<EmptyResponse?, NetworkError>) in
-//                    switch result {
-//                    case .success:
-//                        completion(.success(true))
-//                    case .failure(let error):
-//                        completion(.failure(error))
-//                    }
-//                }
-//            )
+            NetworkService.shared.performRequest(
+                endpoint: Endpoints.userCategories,
+                method: .post,
+                parameters: parameters,
+                encoding: JSONEncoding.default,
+                completion: { (result: Result<CategoriesResponse?, NetworkError>) in
+                    switch result {
+                    case .success:
+                        completion(.success(true))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            )
         }
 }

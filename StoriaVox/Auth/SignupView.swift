@@ -120,6 +120,7 @@ struct SignupView: View {
                     CompleteSignupView()
                         .environmentObject(appSettings)
                         .environmentObject(bannerState)
+                        .environmentObject(viewModel)
                 }
             }
         }

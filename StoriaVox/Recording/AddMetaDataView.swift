@@ -11,14 +11,10 @@ struct AddMetaDataView: View {
     @EnvironmentObject var appSettings: AppSettings
     @StateObject private var viewModel: MetaDataViewModel
     @State var chipViewHeight: CGFloat = .zero
-    @State var storyTitle: String = ""
-    @State var storyTitleError: String? = nil
-    
-    // Colors for visualization
     private let activeVisualizerColor = Color.green
     private let inactiveVisualizerColor = Color.gray.opacity(0.3)
+    @State private var showUploadView = false
     
-    // Initialize with audio URL
     init(audioURL: URL) {
         _viewModel = StateObject(wrappedValue: MetaDataViewModel(audioURL: audioURL))
     }
@@ -53,7 +49,6 @@ struct AddMetaDataView: View {
                                 inactiveColor: inactiveVisualizerColor
                             )
                             
-                            // Playback controls
                             HStack(spacing: 0) {
                                 VStack(spacing: 6) {
                                     AudioProgressBar(
@@ -119,7 +114,7 @@ struct AddMetaDataView: View {
                             Spacer()
                         }
                         
-                        CustomTextField(placeholder: "Title", text: $storyTitle, errorMessage: $storyTitleError)
+                        CustomTextField(placeholder: "Title", text: $viewModel.storyTitle, errorMessage: $viewModel.storyTitleError)
                         
                         Divider()
                             .background(.border)
@@ -143,10 +138,10 @@ struct AddMetaDataView: View {
                                 var height = CGFloat.zero
                                 GeometryReader { geo in
                                     ZStack(alignment: .topLeading, content: {
-                                        ForEach(0..<appSettings.storyCategories.count, id: \.self) { index in
+                                        ForEach(0..<viewModel.categories.count, id: \.self) { index in
                                             CategoryChipView(
                                                 selectedCategories: $viewModel.selectedCategories,
-                                                category: appSettings.storyCategories[index]
+                                                category: viewModel.categories[index]
                                             )
                                             .padding(.all, 5)
                                             .alignmentGuide(.leading) { dimension in
@@ -155,7 +150,7 @@ struct AddMetaDataView: View {
                                                     height -= dimension.height
                                                 }
                                                 let result = width
-                                                if index == appSettings.storyCategories.count - 1 {
+                                                if index == viewModel.categories.count - 1 {
                                                     width = 0
                                                 } else {
                                                     width -= dimension.width
@@ -164,7 +159,7 @@ struct AddMetaDataView: View {
                                             }
                                             .alignmentGuide(.top) { dimension in
                                                 let result = height
-                                                if index == appSettings.storyCategories.count - 1 {
+                                                if index == viewModel.categories.count - 1 {
                                                     height = 0
                                                 }
                                                 return result
@@ -190,7 +185,7 @@ struct AddMetaDataView: View {
                     Spacer()
                     
                     Button {
-                        saveStory(asDraft: true)
+                        
                     } label: {
                         Text("Save Draft")
                             .foregroundStyle(.accent)
@@ -208,7 +203,8 @@ struct AddMetaDataView: View {
                     Spacer()
                     
                     Button {
-                        saveStory(asDraft: false)
+                        viewModel.publishStory()
+                        showUploadView = true
                     } label: {
                         Text("Publish")
                             .foregroundStyle(.white)
@@ -229,6 +225,16 @@ struct AddMetaDataView: View {
         }
         .navigationTitle("Story Details")
         .navigationBarTitleDisplayMode(.inline)
+        .fullScreenCover(isPresented: $showUploadView) {
+            UploadingStoryView(
+                progress: $viewModel.uploadProgress,
+                isUploaded: $viewModel.uploadCompleted,
+                onComplete: {
+                    showUploadView = false
+                }
+            )
+            .environmentObject(appSettings)
+        }
         .alert(isPresented: $viewModel.showAlert) {
             Alert(
                 title: Text("Notice"),
@@ -236,19 +242,6 @@ struct AddMetaDataView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-    }
-    
-    private func saveStory(asDraft: Bool) {
-        if storyTitle.isEmpty {
-            storyTitleError = "Please enter a title for your story"
-            return
-        }
-        viewModel.alertMessage = asDraft
-        ? "Story saved as draft successfully!"
-        : "Story published successfully!"
-        viewModel.showAlert = true
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
     }
 }
 

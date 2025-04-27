@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct UploadingStoryView: View {
-    @State private var progress: Double = 0
-    @State private var isUploaded: Bool = false
-    @State private var timer: Timer? = nil
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var appSettings: AppSettings
+    @Binding var progress: Double
+    @Binding var isUploaded: Bool
+    var onComplete: (() -> Void)?
+    @State private var navigateHome = false
+    
     var body: some View {
         ZStack {
             Color(.background)
@@ -38,7 +42,6 @@ struct UploadingStoryView: View {
                         .rotationEffect(.degrees(-90))
                         .animation(.easeInOut(duration: 0.2), value: progress)
                     
-                    // Percentage Text
                     if !isUploaded {
                         Text("\(Int(progress * 100))%")
                             .font(.system(size: 44, weight: .bold, design: .rounded))
@@ -68,7 +71,8 @@ struct UploadingStoryView: View {
                 
                 if isUploaded {
                     Button(action: {
-                        
+                        navigateHome = true
+                        onComplete?()
                     }) {
                         Text("Back to Home")
                             .font(.headline)
@@ -83,25 +87,14 @@ struct UploadingStoryView: View {
             }
             .padding()
         }
-        .onAppear {
-            startDemo()
-        }
-    }
-    
-    func startDemo() {
-            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-                if progress < 1.0 {
-                    progress += 0.01
-                } else {
-                    timer?.invalidate()
-                    withAnimation {
-                        isUploaded = true
-                    }
-                }
+        .onChange(of: navigateHome) { oldValue, newValue in
+            if newValue {
+                appSettings.createStoryPaths = []
             }
         }
+    }
 }
 
 #Preview {
-    UploadingStoryView()
+    UploadingStoryView(progress: .constant(0.5), isUploaded: .constant(false))
 }

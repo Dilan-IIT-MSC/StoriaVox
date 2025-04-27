@@ -34,7 +34,6 @@ struct VerificationCodeView: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 50)
                 
-                // Verification code field
                 CustomTextField(placeholder: "Enter code", text: $viewModel.verificationCode, errorMessage: $viewModel.verificationCodeError)
                 
                 HStack {

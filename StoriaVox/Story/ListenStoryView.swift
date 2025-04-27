@@ -94,15 +94,12 @@ struct ListenStoryView: View {
                     .padding(.bottom, 24)
                     .padding(.top, 36)
                     
-                    
-                    // Audio visualization
                     AudioVisualisationView()
                         .frame(height: 60)
                         .onReceive(timer) { _ in
                             updateAmplitudes()
                         }
                     
-                    // Time indicators
                     HStack {
                         Text(formatTime(currentTime))
                             .font(.system(size: 14))
@@ -146,7 +143,6 @@ struct ListenStoryView: View {
                         }
                         
                         Button(action: {
-                            // Forward 10 seconds
                             currentTime = min(totalDuration, currentTime + 10)
                         }) {
                             ZStack {
@@ -175,7 +171,6 @@ struct ListenStoryView: View {
         .ignoresSafeArea()
     }
     
-    // MARK: - Helper Methods
     private func formatTime(_ timeInterval: TimeInterval) -> String {
         let minutes = Int(timeInterval) / 60
         let seconds = Int(timeInterval) % 60

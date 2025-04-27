@@ -19,6 +19,16 @@ struct User: Codable {
     let status: Int
     let created: String
     let updated: String?
+    
+    var fullName: String {
+        return "\(firstName) \(lastName ?? "")"
+    }
+}
+
+struct UserResponse: Codable {
+    let status: Bool
+    let message: String
+    let user: User
 }
 
 struct AuthorResponse: Codable {
