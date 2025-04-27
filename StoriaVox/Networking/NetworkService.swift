@@ -80,15 +80,12 @@ class NetworkService {
         ).validate()
         
         request.responseData { response in
-            print(response.response)
-            print(response.result)
             switch response.result {
             case .success(let data):
                 do {
                     if let keyPath = keyPath {
                         if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                            let nestedData = json[keyPath] {
-                            print(json)
                             let nestedDataJson = try JSONSerialization.data(withJSONObject: nestedData)
                             let decoded = try JSONDecoder().decode(T.self, from: nestedDataJson)
                             completion(.success(decoded))
@@ -141,45 +138,52 @@ class NetworkService {
         headers: HTTPHeaders? = nil,
         authType: AuthType = .function,
         dataField: String? = nil,
+        uploadProgress: ((Progress) -> Void)? = nil,
         completion: @escaping (Result<T?, NetworkError>) -> Void
     ) -> UploadRequest {
         let url = buildURL(endpoint: endpoint)
         let finalHeaders = addAuthHeaders(to: headers, authType: authType)
         
-        let request = AF.upload(multipartFormData: multipartFormData, to: url, method: method, headers: finalHeaders)
-            .validate()
+        let request = AF.upload(
+            multipartFormData: multipartFormData,
+            to: url,
+            method: method,
+            headers: finalHeaders
+        ).validate()
+        
+        // Add progress tracking
+        if let progressHandler = uploadProgress {
+            request.uploadProgress { progress in
+                progressHandler(progress)
+            }
+        }
         
         request.responseData { response in
             switch response.result {
             case .success(let data):
                 do {
-//                    let decoder = JSONDecoder()
-//                    let generalResponse = try decoder.decode(GeneralResponse<T>.self, from: data)
-//                    
-//                    if generalResponse.status {
-//                        completion(.success(generalResponse.data))
-//                    } else {
-//                        completion(.failure(.serverMessage(generalResponse.message)))
-//                    }
-                } catch {
-                    do {
-                        if let dataField = dataField {
-                            let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-                            if let statusValue = json?["status"] as? Bool, statusValue,
-                               let nestedData = json?[dataField] {
-                                let nestedDecoder = JSONDecoder()
-                                let nestedDataJson = try JSONSerialization.data(withJSONObject: nestedData)
-                                let decoded = try nestedDecoder.decode(T.self, from: nestedDataJson)
-                                completion(.success(decoded))
-                                return
-                            }
+                    if let dataField = dataField {
+                        let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+                        if let statusValue = json?["status"] as? Bool, statusValue,
+                           let nestedData = json?[dataField] {
+                            let nestedDecoder = JSONDecoder()
+                            let nestedDataJson = try JSONSerialization.data(withJSONObject: nestedData)
+                            let decoded = try nestedDecoder.decode(T.self, from: nestedDataJson)
+                            completion(.success(decoded))
+                            return
+                        } else if let statusValue = json?["status"] as? Bool, !statusValue,
+                                  let message = json?["message"] as? String {
+                            completion(.failure(.serverMessage(message)))
+                            return
                         }
-                        let fallbackDecoder = JSONDecoder()
-                        let decoded = try fallbackDecoder.decode(T.self, from: data)
-                        completion(.success(decoded))
-                    } catch {
-                        completion(.failure(.decodingError(error)))
                     }
+                    
+                    // Direct decode if not using nested data field
+                    let fallbackDecoder = JSONDecoder()
+                    let decoded = try fallbackDecoder.decode(T.self, from: data)
+                    completion(.success(decoded))
+                } catch {
+                    completion(.failure(.decodingError(error)))
                 }
             case .failure(let error):
                 completion(.failure(.networkError(error)))

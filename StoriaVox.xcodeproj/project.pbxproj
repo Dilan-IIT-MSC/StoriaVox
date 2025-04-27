@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FE1DCF552D9C1C6600C5B504 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = FE1DCF542D9C1C6600C5B504 /* AudioKit */; };
+		FE4448192DBEC863004994EE /* lame in Frameworks */ = {isa = PBXBuildFile; productRef = FE4448182DBEC863004994EE /* lame */; };
 		FE45589B2D9EA13C00A5323C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FE45589A2D9EA13C00A5323C /* Alamofire */; };
 		FE4D27BC2D7F73CB006F8E2D /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = FE4D27BB2D7F73CB006F8E2D /* MSAL */; };
 /* End PBXBuildFile section */
@@ -74,6 +75,7 @@
 				FE45589B2D9EA13C00A5323C /* Alamofire in Frameworks */,
 				FE1DCF552D9C1C6600C5B504 /* AudioKit in Frameworks */,
 				FE4D27BC2D7F73CB006F8E2D /* MSAL in Frameworks */,
+				FE4448192DBEC863004994EE /* lame in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,6 +139,7 @@
 				FE4D27BB2D7F73CB006F8E2D /* MSAL */,
 				FE1DCF542D9C1C6600C5B504 /* AudioKit */,
 				FE45589A2D9EA13C00A5323C /* Alamofire */,
+				FE4448182DBEC863004994EE /* lame */,
 			);
 			productName = StoriaVox;
 			productReference = FEF47D432D60C3EF0001168A /* StoriaVox.app */;
@@ -224,6 +227,7 @@
 				FE4D27BA2D7F73CB006F8E2D /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
 				FE1DCF532D9C1C6600C5B504 /* XCRemoteSwiftPackageReference "AudioKit" */,
 				FE4558992D9EA13C00A5323C /* XCRemoteSwiftPackageReference "Alamofire" */,
+				FE4448172DBEC863004994EE /* XCRemoteSwiftPackageReference "lame" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FEF47D442D60C3EF0001168A /* Products */;
@@ -608,6 +612,14 @@
 				minimumVersion = 5.6.5;
 			};
 		};
+		FE4448172DBEC863004994EE /* XCRemoteSwiftPackageReference "lame" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pro100andrey/lame";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.6;
+			};
+		};
 		FE4558992D9EA13C00A5323C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -631,6 +643,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FE1DCF532D9C1C6600C5B504 /* XCRemoteSwiftPackageReference "AudioKit" */;
 			productName = AudioKit;
+		};
+		FE4448182DBEC863004994EE /* lame */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FE4448172DBEC863004994EE /* XCRemoteSwiftPackageReference "lame" */;
+			productName = lame;
 		};
 		FE45589A2D9EA13C00A5323C /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

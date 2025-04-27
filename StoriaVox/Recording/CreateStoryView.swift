@@ -28,8 +28,6 @@ struct CreateStoryView: View {
                 Color.background
                 
                 VStack(spacing: 0) {
-                    
-                    // Recording status indicator
                     if showStatusIndicator {
                         HStack(spacing: 8) {
                             Circle()
@@ -51,7 +49,6 @@ struct CreateStoryView: View {
                         .padding(.bottom, 8)
                     }
                     
-                    // Main visualizer card
                     VStack(spacing: 20) {
                         ZStack {
                             if viewModel.isRecording || viewModel.isPaused {
@@ -348,7 +345,6 @@ struct CreateStoryView: View {
         }
     }
     
-    // Request microphone permission before recording
     private func requestMicrophonePermission() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()

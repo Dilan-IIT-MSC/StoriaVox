@@ -21,7 +21,7 @@ class DashboardService {
         userId: Int,
         completion: @escaping (Result<DashboardResponse, NetworkError>) -> Void
     ) {
-        var parameters: [String: Any] = ["user_id": userId]
+        let parameters: [String: Any] = ["user_id": userId]
         
         NetworkService.shared.performRequest(
             endpoint: Endpoints.dashboard,

@@ -32,7 +32,6 @@ struct ResetPasswordView: View {
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 50)
                     
-                    // New password field
                     SecureField("", text: $newPassword, prompt: Text("New Password")
                         .foregroundColor(.gray))
                     .padding(12)
@@ -45,7 +44,6 @@ struct ResetPasswordView: View {
                             .stroke(Color.accentColor, lineWidth: 0.5)
                     )
                     
-                    // Confirm password field
                     SecureField("", text: $confirmPassword, prompt: Text("Confirm Password")
                         .foregroundColor(.gray))
                     .padding(12)
@@ -59,9 +57,7 @@ struct ResetPasswordView: View {
                     )
                     .padding(.top, 24)
                     
-                    // Reset password button
                     Button {
-                        // Reset password action
                         isPasswordReset = true
                     } label: {
                         HStack {
@@ -80,7 +76,6 @@ struct ResetPasswordView: View {
                     }
                     .padding(.top, 24)
                 } else {
-                    // Success message
                     VStack(spacing: 16) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 60))
@@ -99,9 +94,8 @@ struct ResetPasswordView: View {
                     }
                     .padding(.bottom, 40)
                     
-                    // Return to login button
                     Button {
-                        // Navigate to login screen
+                        
                     } label: {
                         HStack {
                             Spacer()

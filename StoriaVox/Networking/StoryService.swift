@@ -57,39 +57,14 @@ class StoryService {
         )
     }
     
-//    func updateStoryLike(
-//        storyId: Int,
-//        userId: Int,
-//        action: LikeAction,
-//        completion: @escaping (Result<LikeResponse?, NetworkError>) -> Void
-//    ) {
-//        let parameters: [String: Any] = [
-//            "story_id": storyId,
-//            "user_id": userId,
-//            "action": action.rawValue
-//        ]
-//        
-//        NetworkService.shared.performRequest(
-//            endpoint: Endpoints.storyLike,
-//            method: .post,
-//            parameters: parameters,
-//            encoding: JSONEncoding.default,
-//            completion: completion
-//        )
-//    }
-    
     func uploadStory(
         userId: Int,
         title: String,
         categories: [Int],
         audioData: Data,
-        completion: @escaping (Result<StoryListItem?, NetworkError>) -> Void
+        progressHandler: ((Double) -> Void)? = nil,
+        completion: @escaping (Result<StoryUploadResponse?, NetworkError>) -> Void
     ) {
-        if categories.count > 3 {
-            completion(.failure(.serverMessage("Maximum 3 categories allowed")))
-            return
-        }
-        
         NetworkService.shared.upload(
             multipartFormData: { multipartFormData in
                 multipartFormData.append(Data("\(userId)".utf8), withName: "user_id")
@@ -102,6 +77,9 @@ class StoryService {
             },
             to: Endpoints.storyUpload,
             dataField: "story",
+            uploadProgress: { progress in
+                progressHandler?(progress.fractionCompleted)
+            },
             completion: completion
         )
     }

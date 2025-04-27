@@ -11,40 +11,42 @@ import SwiftUI
 extension DiscoverView {
     @ViewBuilder
     func headerView() -> some View {
-        HStack(alignment: .center, spacing: 8) {
-            ZStack {
-                Circle()
-                    .fill(.green50)
-                    .frame(width: 50, height: 50)
-                    .shadow(radius: 1)
+        if let user = UserDefaultsManager.shared.loggedInUser {
+            HStack(alignment: .center, spacing: 8) {
+                ZStack {
+                    Circle()
+                        .fill(.green50)
+                        .frame(width: 50, height: 50)
+                        .shadow(radius: 1)
+                    
+                    Image(systemName: "person.fill")
+                        .foregroundColor(.accent)
+                        .font(.system(size: 32, weight: .bold))
+                }
                 
-                Image(systemName: "person.fill")
-                    .foregroundColor(.accent)
-                    .font(.system(size: 32, weight: .bold))
-            }
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Dilan Anuruddha")
-                    .font(.system(size: 17, weight: .medium))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(user.fullName)
+                        .font(.system(size: 17, weight: .medium))
+                    
+                    Text("Tell your life story")
+                        .font(.system(size: 13, weight: .light))
+                }
                 
-                Text("Tell your life story")
-                    .font(.system(size: 13, weight: .light))
-            }
-            
-            Spacer()
-            
-            HStack(alignment: .center, spacing: 4) {
-                Image(systemName: "ear.badge.waveform")
-                    .resizable()
-                    .foregroundStyle(.accent)
-                    .frame(width: 16, height: 18)
+                Spacer()
                 
-                Text("32k")
-                    .font(.system(size: 14, weight: .light))
+                HStack(alignment: .center, spacing: 4) {
+                    Image(systemName: "ear.badge.waveform")
+                        .resizable()
+                        .foregroundStyle(.accent)
+                        .frame(width: 16, height: 18)
+                    
+                    Text("32k")
+                        .font(.system(size: 14, weight: .light))
+                }
+                .padding(8)
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(8)
             }
-            .padding(8)
-            .background(Color.gray.opacity(0.1))
-            .cornerRadius(8)
         }
     }
     

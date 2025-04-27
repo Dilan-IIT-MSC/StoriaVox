@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CompleteSignupView: View {
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var viewModel: SignupViewModel
     @State private var birthdate: Date = Calendar.current.date(byAdding: .year, value: -18, to: Date()) ?? Date()
     @State private var chipViewHeight: CGFloat = .zero
     @State private var showDatePicker: Bool = false
@@ -99,44 +100,46 @@ struct CompleteSignupView: View {
                                 .font(.system(size: 14))
                                 .foregroundColor(.gray)
                             
-                            VStack {
-                                var width = CGFloat.zero
-                                var height = CGFloat.zero
-                                GeometryReader { geo in
-                                    ZStack(alignment: .topLeading, content: {
-                                        ForEach(0..<appSettings.storyCategories.count, id: \.self) { index in
-                                            CategoryChipView(selectedCategories: .constant([]),
-                                                category: appSettings.storyCategories[index])
-                                                .padding(.all, 5)
-                                                .alignmentGuide(.leading) { dimension in
-                                                    if (abs(width - dimension.width) > geo.size.width) {
-                                                        width = 0
-                                                        height -= dimension.height
+                            if let categories = UserDefaultsManager.shared.savedCategories {
+                                VStack {
+                                    var width = CGFloat.zero
+                                    var height = CGFloat.zero
+                                    GeometryReader { geo in
+                                        ZStack(alignment: .topLeading, content: {
+                                            ForEach(0..<categories.count, id: \.self) { index in
+                                                CategoryChipView(selectedCategories: $viewModel.selectedCategories,
+                                                    category: categories[index])
+                                                    .padding(.all, 5)
+                                                    .alignmentGuide(.leading) { dimension in
+                                                        if (abs(width - dimension.width) > geo.size.width) {
+                                                            width = 0
+                                                            height -= dimension.height
+                                                        }
+                                                        let result = width
+                                                        if index == categories.count - 1 {
+                                                            width = 0
+                                                        } else {
+                                                            width -= dimension.width
+                                                        }
+                                                        return result
                                                     }
-                                                    let result = width
-                                                    if index == appSettings.storyCategories.count - 1 {
-                                                        width = 0
-                                                    } else {
-                                                        width -= dimension.width
+                                                    .alignmentGuide(.top) { dimension in
+                                                        let result = height
+                                                        if index == categories.count - 1 {
+                                                            height = 0
+                                                        }
+                                                        return result
                                                     }
-                                                    return result
-                                                }
-                                                .alignmentGuide(.top) { dimension in
-                                                    let result = height
-                                                    if index == appSettings.storyCategories.count - 1 {
-                                                        height = 0
-                                                    }
-                                                    return result
-                                                }
+                                            }
+                                        })
+                                        .padding(.top, 12)
+                                        .readSize { size in
+                                            chipViewHeight = size.height
                                         }
-                                    })
-                                    .padding(.top, 12)
-                                    .readSize { size in
-                                        chipViewHeight = size.height
                                     }
                                 }
+                                .frame(height: chipViewHeight + 12)
                             }
-                            .frame(height: chipViewHeight + 12)
                         }
                     }
                     .padding(.horizontal, 16)

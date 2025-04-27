@@ -10,7 +10,6 @@ import SwiftUI
 import MSAL
 
 class AuthenticationManager: ObservableObject {
-    //@Published var path: [Route] = []
     @Published var isAuthenticated = false
     @Published var user: MSALNativeAuthUserAccountResult?
     @Published var errorMessage: String?
@@ -33,7 +32,7 @@ class AuthenticationManager: ObservableObject {
             }
             MSALGlobalConfig.loggerConfig.logLevel = .verbose
             if let user = msalClient.getNativeAuthUserAccount() {
-                UserDefaultsManager.shared.loggedInUserId = user.account.username
+                UserDefaultsManager.shared.loggedInUserEmail = user.account.username
                 isAuthenticated = true
             }
         } catch {
