@@ -14,37 +14,30 @@ struct ListenStoryView: View {
     @State private var currentTime: TimeInterval = 1
     @State private var totalDuration: TimeInterval = 200
     @State private var audioAmplitudes: [CGFloat] = Array(repeating: 0, count: 30)
+    let story: StoryListItem
+    
     let podcastTitle = "How to design Beautiful Mindset in our life"
     let author = "Tracy Clayton"
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         ZStack {
-            // Card background
             RoundedRectangle(cornerRadius: 40)
                 .fill(Color(hex: "#E0F182") ?? .accent)
                 .ignoresSafeArea()
    
             VStack(spacing: 0) {
                 ZStack {
-                    AsyncImage(url: URL(string: "https://picsum.photos/1280/720")) { image in
-                        image.resizable()
-                    } placeholder: {
-                        Color.backgroundColors.randomElement() ?? .gray
+                    if let url = story.thumbnailUrl {
+                        AsyncImage(url: URL(string: url)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            Color.backgroundColors.randomElement() ?? .gray
+                        }
                     }
                     
                     VStack {
                         HStack {
-                            Button(action: {}) {
-                                Circle()
-                                    .fill(.white)
-                                    .frame(width: 40, height: 40)
-                                    .overlay(
-                                        Image(systemName: "chevron.left")
-                                            .foregroundColor(.black)
-                                    )
-                            }
-                            
                             Spacer()
                             
                             HStack(spacing: 16) {
@@ -81,12 +74,12 @@ struct ListenStoryView: View {
                 
                 VStack {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(podcastTitle)
+                        Text(story.title)
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(Color(hex: "#1A2B40"))
                             .lineLimit(2)
                         
-                        Text(author)
+                        Text(story.author.displayTitle)
                             .font(.system(size: 16))
                             .foregroundColor(Color(hex: "#666666"))
                     }
@@ -159,7 +152,7 @@ struct ListenStoryView: View {
                     .padding(.vertical, 24)
                 }
                 .padding(.horizontal, 16)
-                .padding(.bottom, safeAreaInsets.bottom)
+                .padding(.bottom, safeAreaInsets.bottom + 30)
                 .background(Color.background)
                 .cornerRadius(20, corners: [.topLeft, .topRight])
             }
@@ -202,8 +195,4 @@ struct AudioKitManager {
     static func getFFTData() -> [CGFloat] {
         return Array(repeating: 0, count: 30)
     }
-}
-
-#Preview {
-    ListenStoryView().environmentObject(AppSettings())
 }

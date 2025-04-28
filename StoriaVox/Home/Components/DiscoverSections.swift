@@ -40,7 +40,7 @@ extension DiscoverView {
                         .foregroundStyle(.accent)
                         .frame(width: 16, height: 18)
                     
-                    Text("32k")
+                    Text("5")
                         .font(.system(size: 14, weight: .light))
                 }
                 .padding(8)
@@ -153,6 +153,13 @@ extension DiscoverView {
                 AllCategoriesView().environmentObject(appSettings)
             case .storyListing:
                 AllStoriesView().environmentObject(appSettings)
+            case .storyDetail(let id):
+                if let story = viewModel.dashboardData?.trendingStories.first(where: {$0.id == id}) {
+                    ListenStoryView(story: story).environmentObject(appSettings)
+                } else {
+                    EmptyView()
+                }
+                
             default:
                 Text("None \(route)")
             }

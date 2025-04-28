@@ -18,13 +18,15 @@ struct StoryListItemView: View {
                     .frame(width: 90, height: 90)
                     .cornerRadius(8)
                 
-                AsyncImage(url: URL(string: story.thumbnailUrl ?? "")) { image in
-                    image.resizable()
-                } placeholder: {
-                    Color.backgroundColors.randomElement() ?? .gray
+                if let url = story.thumbnailUrl {
+                    AsyncImage(url: URL(string: url)) { image in
+                        image.resizable()
+                    } placeholder: {
+                        Color.backgroundColors.randomElement() ?? .gray
+                    }
+                    .frame(width: 100, height: 100)
+                    .cornerRadius(8)
                 }
-                .frame(width: 100, height: 100)
-                .cornerRadius(8)
             }
             
             VStack(alignment: .leading, spacing: 4) {

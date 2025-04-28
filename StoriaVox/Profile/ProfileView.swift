@@ -12,9 +12,9 @@ struct ProfileView: View {
     @EnvironmentObject var appSettings: AppSettings
     @StateObject var viewModel: ProfileViewModel = .init()
     
-    @State internal var userName: String = "John Doe"
-    @State internal var memberSince: String = "April 2024"
-    @State internal var userBio: String = "This is a sample bio text which can be edited by clicking on the pencil icon."
+    @State internal var userName: String = "Dilan Anuruddha"
+    @State internal var memberSince: String = "April 2025"
+    @State internal var userBio: String = ""
     
     @State internal var isEditingBio: Bool = false
     @State internal var editedBio: String = ""
