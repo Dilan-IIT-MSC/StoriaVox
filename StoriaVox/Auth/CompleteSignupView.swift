@@ -182,6 +182,9 @@ struct CompleteSignupView: View {
                 .padding(.bottom, 16)
             }
         }
+        .onAppear {
+            viewModel.fetchCategories()
+        }
     }
 }
 

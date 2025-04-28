@@ -16,11 +16,16 @@ enum Route: Equatable, Hashable {
     case listening
     case allCategories
     case storyListing
+    case storyDetail(Int)
     case storyMetadata
     case storyUpload
     
     public init() {
         self = .unspecified
+    }
+    
+    var id: UUID {
+        return UUID()
     }
 }
 

@@ -66,8 +66,13 @@ struct AllStoriesView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVStack(spacing: 16) {
                         ForEach(viewModel.filteredStoryList(), id: \.id) { story in
-                            StoryListItemView(story: story)
-                                .id(story.id)
+                            Button {
+                                appSettings.homePaths.append(.storyDetail(story.id))
+                            } label: {
+                                StoryListItemView(story: story)
+                                    .id(story.id)
+                                    .contentShape(Rectangle())
+                            }
                         }
                     }
                     .padding(.top, 16)

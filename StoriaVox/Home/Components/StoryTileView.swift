@@ -12,13 +12,15 @@ struct StoryTileView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            AsyncImage(url: URL(string: story.thumbnailUrl ?? "")) { image in
-                image.resizable()
-            } placeholder: {
-                Color.backgroundColors.randomElement() ?? .gray
+            if let url = story.thumbnailUrl {
+                AsyncImage(url: URL(string: url)) { image in
+                    image.resizable()
+                } placeholder: {
+                    Color.backgroundColors.randomElement() ?? .gray
+                }
+                .frame(width: 230, height: 128)
+                .background(Color.backgroundColors.randomElement())
             }
-            .frame(width: 230, height: 128)
-            .background(Color.backgroundColors.randomElement())
             
             Divider()
             
